@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProdeMaster - Panel Principal</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    
+    <!-- <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+    </script> -->
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>ProdeMaster</h2>
+                <span class="user-badge" id="lblUsername">Usuario</span>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <p class="menu-label">Mi Espacio</p>
+                <ul>
+                    <li><a href="prode/fixture.html" class="active">🏆 Jugar Prode</a></li>
+                    <li><a href="prode/podio.html">📊 Tabla de Posiciones</a></li>
+                </ul>
+
+                <div id="admin-section" class="menu-group-admin">
+                    <p class="menu-label">Administración</p>
+                    <ul>
+                        <li><a href="usuarios/index.html">👥 Gestionar Usuarios</a></li>
+                        <li><a href="prode/partidos/index.html">⚽ Gestionar Partidos</a></li>
+                        <li><a href="prode/equipos/index.html">🛡️ Gestionar Equipos</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="btnLogout" class="btn-logout">Cerrar Sesión 🚪</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Bienvenido al Panel Principal</h1>
+                <p class="date-text">Temporada Actual 2026</p>
+            </header>
+
+            <section class="dashboard-grid">
+                
+                <div class="card card-primary">
+                    <h3>Próxima Fecha</h3>
+                    <p class="card-desc">Carga tus pronósticos antes de que comiencen los partidos de la jornada.</p>
+                    <a href="prode/fixture.html" class="card-link">Ir al Fixture →</a>
+                </div>
+
+                <div class="card card-success">
+                    <h3>Tu Puntaje</h3>
+                    <div class="score-display">
+                        <span class="score-number">--</span>
+                        <span class="score-text">puntos acumulados</span>
+                    </div>
+                    <a href="prode/podio.html" class="card-link">Ver Ranking Global →</a>
+                </div>
+
+                <div class="card card-info">
+                    <h3>Estado del Sistema</h3>
+                    <p class="card-desc">Conectado de forma segura a los servicios centralizados de ProdeMaster Web API.</p>
+                    <span class="status-badge">Online</span>
+                </div>
+
+            </section>
+        </main>
+
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = localStorage.getItem('username') || 'Usuario';
+            document.getElementById('lblUsername').textContent = username;
+
+            document.getElementById('btnLogout').addEventListener('click', () => {
+                if (typeof logout === 'function') {
+                    logout();
+                } else {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
