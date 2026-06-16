@@ -1,11 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>ProdeMaster - Iniciar Sesión</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        /* Estilos específicos para centrar la tarjeta de Login en la pantalla */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #0f172a; /* Fondo oscuro tecnológico */
+        }
+        .login-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-card h2 {
+            margin-bottom: 6px;
+            color: #1e293b;
+            text-align: center;
+        }
+        .login-subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #0284c7;
+        }
+        .btn-login {
+            width: 100%;
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-login:hover {
+            background-color: #0369a1;
+        }
+        .alert-danger {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none; /* Oculto por defecto */
+            border: 1px solid #fca5a5;
+        }
+    </style>
 </head>
-<body>
-    Login
+<body class="login-page">
+
+    <div class="login-card">
+        <h2>ProdeMaster 🏆</h2>
+        <p class="login-subtitle">Ingresá tus credenciales para continuar</p>
+
+        <div id="api-error" class="alert-danger"></div>
+
+        <form id="formLogin">
+            <div class="form-group">
+                <label for="txtUser">Nombre de Usuario</label>
+                <input type="text" id="txtUser" required placeholder="Ej: admin">
+            </div>
+
+            <div class="form-group">
+                <label for="txtPass">Contraseña</label>
+                <input type="password" id="txtPass" required placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn-login">Ingresar al Sistema</button>
+        </form>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
 </body>
 </html>
