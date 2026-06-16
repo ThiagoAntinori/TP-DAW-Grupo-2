@@ -1,39 +1,53 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ProdeMaster.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Agregar soporte para Controladores y Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// 2. Configurar el contexto de SQL Server apuntando a tu Base de Datos local
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 3. Habilitar CORS para que tu Frontend en HTML/JS (puro) pueda consultar la API sin bloqueos
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 
+string claveSecreta = builder.Configuration.GetSection("AppSettings:TokenSecreto").Value 
+    ?? throw new InvalidOperationException("Clave no configurada.");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(claveSecreta)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
 var app = builder.Build();
 
-// Configurar el pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(); // Esto te abrirá la interfaz de Swagger en el navegador
+    app.UseSwaggerUI();
 }
 
 app.UseCors("AllowFrontend");
 
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllers();

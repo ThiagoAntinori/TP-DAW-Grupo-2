@@ -1,6 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using ProdeMaster.API.Models;
 
 namespace ProdeMaster.API.Services
 {
@@ -25,6 +30,49 @@ namespace ProdeMaster.API.Services
                 
                 return computedHashString == storedHash;
             }
+        }
+
+        public static string CrearTokenJWT(User user, string claveSecreta)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
+
+            foreach (var userPrivilege in user.UserPrivileges)
+            {
+                if (userPrivilege.Privilege != null)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, userPrivilege.Privilege.Description));
+                }
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(claveSecreta));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(15),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        public static RefreshToken GenerarRefreshToken(int userId)
+        {
+            return new RefreshToken
+            {
+                UserId = userId,
+                Token = Guid.NewGuid().ToString() + "-" + Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
         }
     }
 }

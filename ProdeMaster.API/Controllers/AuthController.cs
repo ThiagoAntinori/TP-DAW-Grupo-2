@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProdeMaster.API.Data;
-using ProdeMaster.API.Services; // Importamos el servicio criptográfico
+using ProdeMaster.API.Models;
+using ProdeMaster.API.Services;
+using System;
+using System.Threading.Tasks;
 
 namespace ProdeMaster.API.Controllers
 {
@@ -10,10 +13,12 @@ namespace ProdeMaster.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(DataContext context)
+        public AuthController(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         public class LoginRequest
@@ -25,15 +30,14 @@ namespace ProdeMaster.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            // 1. Buscar el usuario en la base de datos por su UserName
             var user = await _context.Users
+                .Include(u => u.UserPrivileges)
+                .ThenInclude(up => up.Privilege)
                 .FirstOrDefaultAsync(u => u.UserName == request.Username);
 
-            // 2. Si no existe, rechazamos con un mensaje genérico por seguridad
             if (user == null)
                 return BadRequest(new { message = "El usuario o la contraseña son incorrectos." });
 
-            // 3. Validar el Hash usando el Salt almacenado en el registro
             bool passwordCorrecto = AuthService.VerificarPasswordHash(
                 request.Password, 
                 user.PasswordHash, 
@@ -43,13 +47,22 @@ namespace ProdeMaster.API.Controllers
             if (!passwordCorrecto)
                 return BadRequest(new { message = "El usuario o la contraseña son incorrectos." });
 
-            // 4. Generación simulada de Tokens (Próximo paso: implementar JWT real)
-            var dummyAccessToken = "access_token_real_user_" + user.Id;
-            var dummyRefreshToken = Guid.NewGuid().ToString();
+            string claveSecreta = _configuration.GetSection("AppSettings:TokenSecreto").Value 
+                ?? throw new InvalidOperationException("La clave secreta no fue configurada.");
+
+            string tokenRealJWT = AuthService.CrearTokenJWT(user, claveSecreta);
+
+            var nuevoRefreshToken = AuthService.GenerarRefreshToken(user.Id);
+            
+            var tokensViejos = _context.RefreshTokens.Where(rt => rt.UserId == user.Id);
+            _context.RefreshTokens.RemoveRange(tokensViejos);
+
+            await _context.RefreshTokens.AddAsync(nuevoRefreshToken);
+            await _context.SaveChangesAsync();
 
             return Ok(new {
-                token = dummyAccessToken,
-                refreshToken = dummyRefreshToken,
+                token = tokenRealJWT,
+                refreshToken = nuevoRefreshToken.Token,
                 username = user.UserName
             });
         }
