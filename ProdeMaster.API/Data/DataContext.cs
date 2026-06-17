@@ -13,11 +13,31 @@ namespace ProdeMaster.API.Data
         public DbSet<Privilege> Privileges => Set<Privilege>();
         public DbSet<UserPrivilege> UsersPrivileges => Set<UserPrivilege>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<Equipo> Equipos => Set<Equipo>();
+        public DbSet<Partido> Partidos => Set<Partido>();
+        public DbSet<Pronostico> Pronosticos => Set<Pronostico>();
+        public DbSet<Puntaje> Puntajes => Set<Puntaje>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Partido>()
+                .HasOne(p => p.EquipoLocal)
+                .WithMany()
+                .HasForeignKey(p => p.EquipoLocalId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Partido>()
+                .HasOne(p => p.EquipoVisitante)
+                .WithMany()
+                .HasForeignKey(p => p.EquipoVisitanteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Pronostico>()
+                .HasOne(p => p.Partido)
+                .WithMany()
+                .HasForeignKey(p => p.PartidoId)
+                .OnDelete(DeleteBehavior.Restrict);
             // 1. Seed de Privilegios (Mapeamos los permisos requeridos por el sistema)
             var privAdminSeguridad = new Privilege { Id = 1, Description = "ADMIN_SEGURIDAD" };
             var privAdminNegocio = new Privilege { Id = 2, Description = "ADMIN_NEGOCIO" };

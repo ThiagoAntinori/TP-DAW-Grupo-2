@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProdeMaster.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+804e1f81a0b9088b0181cb02ab0b3ccaee85a553")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eedfdc627490d3cbf0803c84e768c0ee944afe9a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProdeMaster.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProdeMaster.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
