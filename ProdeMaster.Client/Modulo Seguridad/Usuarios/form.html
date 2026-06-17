@@ -1,11 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Nuevo Usuario | ProdeMaster</title>
+    <title>ProdeMaster Testing - Formulario de Usuario</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #334155;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #0284c7;
+        }
+        /* Contenedor estético de Checkboxes para los privilegios */
+        .privileges-card-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: #334155;
+            cursor: pointer;
+        }
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+        .alert-error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <!-- Formulario para crear un nuevo usuario -->
+
+    <div class="form-container">
+        <header class="content-header" style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+            <h1 id="form-title">Crear Nuevo Usuario</h1>
+            <p class="date-text" id="form-subtitle">Complete las credenciales y accesos del sistema</p>
+        </header>
+
+        <div id="form-error" class="alert-error"></div>
+
+        <form id="formUsuario">
+            <div class="form-group">
+                <label for="txtUsername">Nombre de Usuario</label>
+                <input type="text" id="txtUsername" required placeholder="Ej: juan.perez">
+            </div>
+
+            <div class="form-group" id="secPassword">
+                <label for="txtPassword">Contraseña de Acceso</label>
+                <input type="password" id="txtPassword" placeholder="Mínimo 6 caracteres">
+            </div>
+
+            <div class="form-group">
+                <label>Asignación de Privilegios</label>
+                <div class="privileges-card-box" id="containerPrivileges">
+                    <p style="color:#64748b; font-size:0.9rem;">Cargando privilegios del sistema...</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="location.href='index.html'">Cancelar</button>
+                <button type="submit" class="btn btn-success" id="btnGuardar">Guardar Usuario</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/usuarios.js"></script>
 </body>
 </html>

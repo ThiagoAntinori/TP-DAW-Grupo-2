@@ -1,12 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios | ProdeMaster</title>
+    <title>ProdeMaster Testing - Lista de Usuarios</title>
+    <link rel="stylesheet" href="../../Assets/CSS/main.css">
+    <style>
+        .testing-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .nav-back {
+            margin-bottom: 20px;
+            display: inline-block;
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-    <!-- Visualiza grilla de usuarios (botón 'Ver', 'Desactivar' y 'editar')
-    Botón de 'Nuevo usuario' redirige a form.html -->
+
+    <div class="testing-container">
+        <a href="../../index.html" class="nav-back">← Volver al Panel Principal</a>
+        
+        <header class="content-header">
+            <h1>Testing: Gestión de Usuarios</h1>
+            <p class="date-text">Consumo directo desde ASP.NET Web API</p>
+        </header>
+
+        <section class="action-bar">
+            <div class="search-box">
+                <input type="text" id="txtSearch" placeholder="Buscar por nombre de usuario... [ENTER]">
+                <button id="btnSearch" class="btn btn-secondary">Buscar 🔍</button>
+            </div>
+            <a href="form.html" class="btn btn-success">+ Nuevo Usuario</a>
+        </section>
+
+        <section class="table-container">
+            <table class="data-table" id="tblUsers">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Privilegios Asignados</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" style="text-align:center; color:#64748b;">Cargando usuarios de la base de datos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="../../Assets/JS/auth.js"></script>
+    <script src="../../Assets/JS/usuarios.js"></script>
 </body>
 </html>
