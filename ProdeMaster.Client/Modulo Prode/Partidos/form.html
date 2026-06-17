@@ -1,11 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Nuevo Partido | ProdeMaster</title>
+    <title>ProdeMaster - Formulario Partido</title>
+    <link rel="stylesheet" href="../../Assets/CSS/main.css">
 </head>
 <body>
-    <!-- Formulario para crear un nuevo partido -->
+    <div class="form-container">
+        <header class="content-header" style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+            <h1 id="form-title">Programar Nuevo Partido</h1>
+            <p class="date-text" id="form-subtitle">Defina los contrincantes y el horario del encuentro</p>
+        </header>
+        <div id="form-error" class="alert-error" style="background-color: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; padding: 12px; border-radius: 6px; margin-bottom: 20px; display: none;"></div>
+        <form id="formPartido">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Equipo Local</label>
+                <select id="ddlLocal" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;"></select>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Equipo Visitante</label>
+                <select id="ddlVisitante" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px CONTAINER;"></select>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Fecha y Hora del Partido</label>
+                <input type="datetime-local" id="txtFechaHora" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            </div>
+            <div id="section-resultado-admin" style="display:none; background-color:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:6px; margin-bottom:20px;">
+                <h3 style="margin-top:0; margin-bottom:12px; font-size:1rem; color:#1e293b;">Cargar Marcador Final (Cierre de Partido)</h3>
+                <div style="display:flex; gap:20px; align-items:center;">
+                    <div>
+                        <label style="font-size:0.85rem; font-weight:600;">Goles Local</label>
+                        <input type="number" id="numGolesLocal" value="0" min="0" style="width:60px; padding:6px; margin-left:10px;">
+                    </div>
+                    <div>
+                        <label style="font-size:0.85rem; font-weight:600;">Goles Visitante</label>
+                        <input type="number" id="numGolesVisitante" value="0" min="0" style="width:60px; padding:6px; margin-left:10px;">
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 30px;">
+                <button type="button" class="btn btn-secondary" onclick="location.href='index.html'">Cancelar</button>
+                <button type="submit" class="btn btn-success" id="btnGuardar">Guardar Partido</button>
+            </div>
+        </form>
+    </div>
+    <script src="../../Assets/JS/auth.js"></script>
+    <script src="../../Assets/JS/partidos.js"></script>
 </body>
 </html>

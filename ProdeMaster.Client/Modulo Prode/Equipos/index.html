@@ -1,12 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipos | ProdeMaster</title>
+    <title>ProdeMaster - Equipos</title>
+    <link rel="stylesheet" href="../../Assets/CSS/main.css">
 </head>
 <body>
-    <!-- Visualiza grilla de equipos (botón 'Ver', 'eliminar' y 'editar')
-    Botón de 'Nuevo equipo' redirige a form.html -->
+    <div class="testing-container">
+        <a href="../../index.html" class="nav-back">← Volver al Panel Principal</a>
+        <header class="content-header">
+            <h1>Gestión de Equipos</h1>
+            <p class="date-text">Administración de clubes participantes</p>
+        </header>
+        <section class="action-bar">
+            <div class="search-box">
+                <input type="text" id="txtSearch" placeholder="Buscar por nombre... [ENTER]">
+                <button id="btnSearch" class="btn btn-secondary">Buscar 🔍</button>
+            </div>
+            <a href="form.html" class="btn btn-success">+ Nuevo Equipo</a>
+        </section>
+        <section class="table-container">
+            <table class="data-table" id="tblTeams">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Escudo</th>
+                        <th>Nombre</th>
+                        <th>Abreviatura</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" style="text-align:center; color:#64748b;">Cargando equipos de la base de datos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <script src="../../Assets/JS/auth.js"></script>
+    <script src="../../Assets/JS/equipos.js"></script>
 </body>
 </html>

@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partidos | ProdeMaster</title>
+    <title>ProdeMaster - Fixture</title>
+    <link rel="stylesheet" href="../../Assets/CSS/main.css">
 </head>
 <body>
-    <!-- Visualiza grilla de partidos (botón 'Ver', 'eliminar' y 'editar')
-Botón de 'Nuevo partido' redirige a form.html -->
+    <div class="testing-container">
+        <a href="../../index.html" class="nav-back">← Volver al Panel Principal</a>
+        <header class="content-header">
+            <h1>Gestión de Partidos (Fixture)</h1>
+            <p class="date-text">Programación de partidos y carga de resultados oficiales</p>
+        </header>
+        <section class="action-bar">
+            <div style="flex:1;"></div>
+            <a href="form.html" class="btn btn-success">+ Programar Partido</a>
+        </section>
+        <section class="table-container">
+            <table class="data-table" id="tblMatches">
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Partido</th>
+                        <th>Resultado Real</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" style="text-align:center; color:#64748b;">Cargando calendario desde el servidor...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <script src="../../Assets/JS/auth.js"></script>
+    <script src="../../Assets/JS/partidos.js"></script>
 </body>
 </html>
