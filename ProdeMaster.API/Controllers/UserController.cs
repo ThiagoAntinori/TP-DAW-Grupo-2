@@ -177,12 +177,5 @@ namespace ProdeMaster.API.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Usuario eliminado correctamente del sistema." });
         }
-
-        [HttpGet("privilegios")]
-        public async Task<ActionResult<IEnumerable<Privilege>>> GetPrivilegios()
-        {
-            var privilegios = await _context.Privileges.ToListAsync();
-            return Ok(privilegios);
-        }
     }
 }

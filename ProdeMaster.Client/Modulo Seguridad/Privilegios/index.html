@@ -1,11 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privilegios | ProdeMaster</title>
+    <title>ProdeMaster Testing - Lista de Privilegios</title>
+    <link rel="stylesheet" href="../../Assets/CSS/main.css">
+    <style>
+        .testing-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .nav-back {
+            margin-bottom: 20px;
+            display: inline-block;
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-    <!-- Página para gestionar los privilegios de los usuarios -->
+
+    <div class="testing-container">
+        <a href="../../index.html" class="nav-back">← Volver al Panel Principal</a>
+        
+        <header class="content-header">
+            <h1>Testing: Gestión de Privilegios</h1>
+            <p class="date-text">Consumo directo desde ASP.NET Web API</p>
+        </header>
+
+        <section class="action-bar">
+            <div class="search-box">
+                <input type="text" id="txtSearch" placeholder="Buscar por descripción... [ENTER]">
+                <button id="btnSearch" class="btn btn-secondary">Buscar 🔍</button>
+            </div>
+            <a href="form.html" class="btn btn-success">+ Nuevo Privilegio</a>
+        </section>
+
+        <section class="table-container">
+            <table class="data-table" id="tblPrivileges">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción del Privilegio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" style="text-align:center; color:#64748b;">Cargando privilegios de la base de datos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="../../Assets/JS/auth.js"></script>
+    <script src="../../Assets/JS/privilegios.js"></script>
 </body>
 </html>
