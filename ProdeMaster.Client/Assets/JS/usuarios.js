@@ -2,6 +2,8 @@ const API_USUARIOS_URL = "http://localhost:5097/api/Usuarios";
 
 document.addEventListener("DOMContentLoaded", async () => {
     
+    protegerRuta(["ADMIN_SEGURIDAD"]);
+    
     const tbody = document.querySelector("#tblUsers tbody");
     if (tbody) {
         cargarGrillaUsuarios();

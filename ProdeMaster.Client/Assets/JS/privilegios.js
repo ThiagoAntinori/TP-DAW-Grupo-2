@@ -2,6 +2,8 @@ const API_PRIVILEGIOS_URL = "http://localhost:5097/api/Usuarios/privilegios";
 
 document.addEventListener("DOMContentLoaded", async () => {
     
+    protegerRuta(["ADMIN_SEGURIDAD"]);
+    
     const tbody = document.querySelector("#tblPrivileges tbody");
     if (tbody) {
         cargarGrillaPrivilegios();

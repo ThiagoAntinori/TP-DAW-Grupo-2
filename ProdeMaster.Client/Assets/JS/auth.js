@@ -56,3 +56,90 @@ function logout() {
 
     window.location.href = "login.html";
 }
+
+function decodificarJWT(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        return null;
+    }
+}
+
+function obtenerPrivilegiosUsuario() {
+    const token = localStorage.getItem("token");
+    if (!token) return [];
+    
+    const payload = decodificarJWT(token);
+    if (!payload) return [];
+
+    const roles = payload.role;
+
+    if (!roles) return [];
+    return Array.isArray(roles) ? roles : [roles];
+}
+
+function protegerRuta(privilegiosRequeridos = []) {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+        window.location.href = "../../login.html";
+        return;
+    }
+
+    if (privilegiosRequeridos.length === 0) return;
+
+    const privilegiosUsuario = obtenerPrivilegiosUsuario();
+    const tienePermiso = privilegiosRequeridos.some(priv => privilegiosUsuario.includes(priv));
+
+    if (!tienePermiso) {
+        alert("Acceso denegado: No posee los privilegios requeridos para visualizar este módulo.");
+        window.location.href = "../../index.html";
+    }
+}
+
+function renderizarMenuPrincipal() {
+    const privilegios = obtenerPrivilegiosUsuario();
+
+    const secSeguridad = document.getElementById("menu-seguridad-section");
+    const secNegocio = document.getElementById("menu-negocio-section");
+    const secUsuario = document.getElementById("menu-user-section");
+
+    if (secSeguridad && privilegios.includes("ADMIN_SEGURIDAD")) {
+        secSeguridad.style.display = "block";
+    }
+
+    if (secNegocio && privilegios.includes("ADMIN_NEGOCIO")) {
+        secNegocio.style.display = "block";
+    }
+
+    if (secUsuario && (privilegios.includes("PARTICIPAR_PRODE") || privilegios.includes("ADMIN_NEGOCIO") || privilegios.includes("ADMIN_SEGURIDAD"))) {
+        secUsuario.style.display = "block";
+    } else if (secUsuario) {
+        secUsuario.style.display = "none";
+    }
+}
+
+function protegerRuta(privilegiosRequeridos = []) {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+        window.location.href = "../../login.html";
+        return;
+    }
+
+    if (privilegiosRequeridos.length === 0) return;
+
+    const privilegiosUsuario = obtenerPrivilegiosUsuario();
+    const tienePermiso = privilegiosRequeridos.some(priv => privilegiosUsuario.includes(priv));
+
+    if (!tienePermiso) {
+        alert("Acceso denegado: No posee los privilegios requeridos para visualizar este módulo.");
+        window.location.href = "../../index.html";
+    }
+}
