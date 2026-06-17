@@ -210,3 +210,110 @@ body {
     font-weight: 600;
     font-size: 0.85rem;
 }
+
+/* --- Contenedores del Fixture de Juego --- */
+.fixture-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.partido-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.partido-info-meta {
+    flex: 1;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.partido-info-meta .fecha {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.partido-equipos-layout {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.equipo-voto-bloque {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 200px;
+}
+
+.equipo-voto-bloque.local {
+    justify-content: flex-end;
+}
+
+.equipo-voto-bloque.visitante {
+    justify-content: flex-start;
+}
+
+.nombre-equipo-prode {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.input-goles-prode {
+    width: 50px;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+}
+
+.input-goles-prode:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border-color: #e2e8f0;
+}
+
+.vs-separador {
+    font-weight: bold;
+    color: #94a3b8;
+    padding: 0 10px;
+}
+
+.partido-acciones-prode {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-guardar-prode {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-guardar-prode:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-guardar-prode:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}

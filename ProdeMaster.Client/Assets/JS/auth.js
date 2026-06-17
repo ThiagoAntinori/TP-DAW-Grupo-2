@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     localStorage.setItem("refreshToken", result.refreshToken);
                     localStorage.setItem("username", result.username);
 
-                    window.location.href = "index.html";
+                    const baseCliente = obtenerUrlBaseCliente();
+                    window.location.href = `${baseCliente}/index.html`; 
                 } else {
                     errorDiv.textContent = result.message || "Error al iniciar sesión.";
                     errorDiv.style.display = "block";
@@ -54,7 +55,9 @@ function logout() {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("username");
 
-    window.location.href = "login.html";
+    const baseCliente = obtenerUrlBaseCliente();
+
+    window.location.href = `${baseCliente}/login.html`;
 }
 
 function decodificarJWT(token) {
@@ -84,11 +87,23 @@ function obtenerPrivilegiosUsuario() {
     return Array.isArray(roles) ? roles : [roles];
 }
 
+function obtenerUrlBaseCliente() {
+    const origin = window.location.origin;
+    const pathName = window.location.pathname;
+
+    if (pathName.startsWith("/ProdeMaster.Client/")) {
+        return `${origin}/ProdeMaster.Client`;
+    }
+
+    return origin;
+}
+
 function protegerRuta(privilegiosRequeridos = []) {
     const token = localStorage.getItem("token");
-    
+    const baseCliente = obtenerUrlBaseCliente();
+
     if (!token) {
-        window.location.href = "../../login.html";
+        window.location.href = `${baseCliente}/login.html`;
         return;
     }
 
@@ -99,7 +114,7 @@ function protegerRuta(privilegiosRequeridos = []) {
 
     if (!tienePermiso) {
         alert("Acceso denegado: No posee los privilegios requeridos para visualizar este módulo.");
-        window.location.href = "../../index.html";
+        window.location.href = `${baseCliente}/index.html`;
     }
 }
 
@@ -127,7 +142,8 @@ function renderizarMenuPrincipal() {
 
 function protegerRuta(privilegiosRequeridos = []) {
     const token = localStorage.getItem("token");
-    
+    const baseCliente = obtenerUrlBaseCliente();
+
     if (!token) {
         window.location.href = "../../login.html";
         return;
