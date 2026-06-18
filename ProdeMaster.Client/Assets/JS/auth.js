@@ -1,14 +1,14 @@
 const API_URL = "http://localhost:5097/api"; 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const formLogin = document.getElementById("formLogin");
+    const formLogin = document.getElementById("loginForm");
     
     if (formLogin) {
         formLogin.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const username = document.getElementById("txtUser").value.trim();
-            const password = document.getElementById("txtPass").value;
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
             const errorDiv = document.getElementById("api-error");
 
             errorDiv.style.display = "none";
