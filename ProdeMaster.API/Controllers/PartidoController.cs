@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProdeMaster.API.Data;
 using ProdeMaster.API.Models;
+using ProdeMaster.API.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace ProdeMaster.API.Controllers
     public class PartidoController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly ProdeService _prodeService;
 
-        public PartidoController(DataContext context)
+        public PartidoController(DataContext context, ProdeService prodeService)
         {
             _context = context;
+            _prodeService = prodeService;
         }
 
         public class CrearPartidoDto
@@ -124,9 +127,11 @@ namespace ProdeMaster.API.Controllers
             partido.GolesVisitante = dto.GolesVisitante;
             partido.Estado = "Finalizado";
 
+            await _prodeService.ProcesarPuntajesPartido(id);
+
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Resultado registrado y actualizado correctamente." });
+            return Ok(new { message = "Resultado registrado y puntos de usuarios procesados con éxito." });
         }
 
         // DELETE: api/Partido/5

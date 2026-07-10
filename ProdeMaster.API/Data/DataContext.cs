@@ -38,7 +38,6 @@ namespace ProdeMaster.API.Data
                 .WithMany()
                 .HasForeignKey(p => p.PartidoId)
                 .OnDelete(DeleteBehavior.Restrict);
-            // 1. Seed de Privilegios (Mapeamos los permisos requeridos por el sistema)
             var privAdminSeguridad = new Privilege { Id = 1, Description = "ADMIN_SEGURIDAD" };
             var privAdminNegocio = new Privilege { Id = 2, Description = "ADMIN_NEGOCIO" };
             var privParticiparProde = new Privilege { Id = 3, Description = "PARTICIPAR_PRODE" };
@@ -49,7 +48,6 @@ namespace ProdeMaster.API.Data
                 privParticiparProde
             );
 
-            // 2. Generar Hash y Salt criptográfico para el usuario Administrador inicial (Contraseña: admin123)
             string passwordPlana = "admin123";
             string passwordHash;
             string passwordSalt;
@@ -60,7 +58,6 @@ namespace ProdeMaster.API.Data
                 passwordHash = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(passwordPlana)));
             }
 
-            // 3. Seed del Usuario Administrador
             var adminUser = new User
             {
                 Id = 1,
@@ -71,10 +68,9 @@ namespace ProdeMaster.API.Data
 
             modelBuilder.Entity<User>().HasData(adminUser);
 
-            // 4. Vincular al Administrador con sus privilegios en la tabla intermedia
             modelBuilder.Entity<UserPrivilege>().HasData(
-                new UserPrivilege { Id = 1, UserId = 1, PrivilegeId = 1 }, // ADMIN_SEGURIDAD
-                new UserPrivilege { Id = 2, UserId = 1, PrivilegeId = 2 }  // ADMIN_NEGOCIO
+                new UserPrivilege { Id = 1, UserId = 1, PrivilegeId = 1 },
+                new UserPrivilege { Id = 2, UserId = 1, PrivilegeId = 2 }
             );
         }
     }
