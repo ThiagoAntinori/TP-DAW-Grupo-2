@@ -43,6 +43,9 @@ namespace ProdeMaster.API.Controllers
             if (dto.EquipoLocalId == dto.EquipoVisitanteId)
                 return BadRequest(new { message = "Un equipo no puede jugar contra sí mismo." });
 
+            if (dto.FechaHora <= DateTime.UtcNow)
+                return BadRequest(new { Message = "No se puede programar un partido en el pasado." });
+            
             var localExiste = await _context.Equipos.AnyAsync(e => e.Id == dto.EquipoLocalId);
             var visitanteExiste = await _context.Equipos.AnyAsync(e => e.Id == dto.EquipoVisitanteId);
 

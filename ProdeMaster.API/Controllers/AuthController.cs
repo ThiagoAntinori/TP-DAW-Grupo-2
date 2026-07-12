@@ -50,6 +50,11 @@ namespace ProdeMaster.API.Controllers
             string claveSecreta = _configuration.GetSection("AppSettings:TokenSecreto").Value 
                 ?? throw new InvalidOperationException("La clave secreta no fue configurada.");
 
+            var puntajeUsuario = await _context.Puntajes
+                    .Where(p => p.UsuarioId == user.Id)
+                    .Select(p => p.PuntosTotales)
+                    .FirstOrDefaultAsync();
+            
             string tokenRealJWT = AuthService.CrearTokenJWT(user, claveSecreta);
 
             var nuevoRefreshToken = AuthService.GenerarRefreshToken(user.Id);
@@ -63,7 +68,8 @@ namespace ProdeMaster.API.Controllers
             return Ok(new {
                 token = tokenRealJWT,
                 refreshToken = nuevoRefreshToken.Token,
-                username = user.UserName
+                username = user.UserName,
+                puntaje = puntajeUsuario,
             });
         }
     }
