@@ -1,319 +1,344 @@
+:root {
+    --color-blue-fifa: #004bbf;
+    --color-green-pitch: #00c853;
+    --color-red-passion: #ef4444;
+    --color-accent-gold: #ffb700;
+    --bg-surface-clear: #f8fafc;
+    --white: #ffffff;
+    --text-dark-main: #0f172a;
+    --text-dark-muted: #64748b;
+    --border-soft: #e2e8f0;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 body {
-    background-color: #f4f6f9;
-    color: #333;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.dashboard-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-}
-
-.sidebar {
-    width: 280 bounds px;
-    min-width: 280px;
-    background-color: #1e293b;
-    color: #fff;
+    background-color: var(--bg-surface-clear);
+    color: var(--text-dark-main);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar-header {
-    padding: 24px;
-    border-bottom: 1px solid #334155;
+/* --- CLASE DE CONTROL DE VISIBILIDAD REQUERIDA POR JS --- */
+.display-none {
+    display: none !important;
 }
 
-.sidebar-header h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #38bdf8;
-    letter-spacing: 0.5px;
+.display-block {
+    display: block !important;
 }
 
-.user-badge {
-    display: inline-block;
-    margin-top: 8px;
-    font-size: 0.85rem;
-    background-color: #334155;
-    padding: 4px 10px;
-    border-radius: 12px;
-    color: #cbd5e1;
+.display-flex {
+    display: flex !important;
 }
 
-.sidebar-menu {
-    flex-grow: 1;
-    padding: 24px 16px;
-    overflow-y: auto;
-}
-
-.menu-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #64748b;
-    margin-bottom: 12px;
-    margin-top: 20px;
-    font-weight: 600;
-}
-
-.sidebar-menu ul {
-    list-style: none;
-}
-
-.sidebar-menu ul li {
-    margin-bottom: 8px;
-}
-
-.sidebar-menu ul li a {
-    display: block;
-    color: #94a3b8;
-    text-decoration: none;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.sidebar-menu ul li a:hover {
-    background-color: #334155;
-    color: #fff;
-}
-
-.sidebar-menu ul li a.active {
-    background-color: #0284c7;
-    color: #fff;
-}
-
-.sidebar-footer {
-    padding: 16px;
-    border-top: 1px solid #334155;
-}
-
-.btn-logout {
-    width: 100%;
-    background-color: #ef4444;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-logout:hover {
-    background-color: #dc2626;
-}
-
-.main-content {
-    flex-grow: 1;
-    padding: 40px;
-    overflow-y: auto;
-}
-
-.content-header {
-    margin-bottom: 32px;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 16px;
-}
-
-.content-header h1 {
-    font-size: 2rem;
-    color: #0f172a;
-}
-
-.date-text {
-    color: #64748b;
-    font-size: 0.95rem;
-    margin-top: 4px;
-}
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-}
-
-.card {
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 200px;
-    border-top: 4px solid #cbd5e1;
-}
-
-.card-primary { border-top-color: #0284c7; }
-.card-success { border-top-color: #22c55e; }
-.card-info { border-top-color: #06b6d4; }
-
-.card h3 {
-    font-size: 1.25rem;
-    color: #1e293b;
-    margin-bottom: 12px;
-}
-
-.card-desc {
-    color: #64748b;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.card-link {
-    color: #0284c7;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.card-link:hover {
-    text-decoration: underline;
-}
-
-.score-display {
-    margin-bottom: 20px;
-}
-
-.score-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #22c55e;
-    display: block;
-}
-
-.score-text {
-    font-size: 0.85rem;
-    color: #64748b;
-}
-
-.status-badge {
-    align-self: flex-start;
-    background-color: #dcfce7;
-    color: #15803d;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.85rem;
-}
-
-/* --- Contenedores del Fixture de Juego --- */
-.fixture-cards-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 20px;
-}
-
-.partido-card {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
+/* --- BARRA DE NAVEGACIÓN SUPERIOR --- */
+.top-navbar {
+    background-color: var(--white);
+    height: 80px;
+    border-bottom: 1px solid var(--border-soft);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
-.partido-info-meta {
-    flex: 1;
-    font-size: 0.85rem;
-    color: #64748b;
-}
-
-.partido-info-meta .fecha {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.partido-equipos-layout {
-    flex: 3;
+.navbar-brand {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 12px;
 }
 
-.equipo-voto-bloque {
+.brand-icon {
+    font-size: 1.6rem;
+    color: var(--color-blue-fifa);
+}
+
+.navbar-brand h2 {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    color: var(--text-dark-main);
+}
+
+.navbar-brand h2 span {
+    color: var(--color-green-pitch);
+}
+
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-dark-main);
+    cursor: pointer;
+}
+
+.navbar-links {
     display: flex;
     align-items: center;
-    gap: 8px;
-    width: 200px;
+    gap: 24px;
 }
 
-.equipo-voto-bloque.local {
-    justify-content: flex-end;
-}
-
-.equipo-voto-bloque.visitante {
-    justify-content: flex-start;
-}
-
-.nombre-equipo-prode {
+.nav-link {
+    color: var(--text-dark-muted);
+    text-decoration: none;
     font-weight: 600;
-    color: #1e293b;
-}
-
-.input-goles-prode {
-    width: 50px;
-    padding: 8px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.1rem;
-    border: 1px solid #cbd5e1;
+    font-size: 0.95rem;
+    padding: 8px 12px;
     border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
-.input-goles-prode:disabled {
+.nav-link i {
+    margin-right: 6px;
+    font-size: 1rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--color-blue-fifa);
     background-color: #f1f5f9;
-    color: #94a3b8;
-    border-color: #e2e8f0;
 }
 
-.vs-separador {
-    font-weight: bold;
-    color: #94a3b8;
-    padding: 0 10px;
-}
-
-.partido-acciones-prode {
-    flex: 1;
+.navbar-user-control {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    border-left: 1px solid var(--border-soft);
+    padding-left: 24px;
 }
 
-.btn-guardar-prode {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
+.user-welcome {
+    font-size: 0.9rem;
+    color: var(--text-dark-muted);
+}
+
+.user-welcome strong {
+    color: var(--text-dark-main);
+    font-weight: 700;
+}
+
+/* --- COMPONENTE DE BOTONES --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
     font-weight: 600;
+    border-radius: 8px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
-.btn-guardar-prode:hover {
-    background-color: #1d4ed8;
+.btn-logout {
+    background-color: #fef2f2;
+    color: var(--color-red-passion);
+    border: 1px solid #fee2e2;
 }
 
-.btn-guardar-prode:disabled {
-    background-color: #94a3b8;
-    cursor: not-allowed;
+.btn-logout:hover {
+    background-color: var(--color-red-passion);
+    color: var(--white);
+    border-color: var(--color-red-passion);
+}
+
+/* --- ESTRUCTURA DEL CONTENIDO (LAYOUT CLEAR) --- */
+.main-layout-clear {
+    flex-grow: 1;
+    padding: 40px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.welcome-hero-banner {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    border-radius: 20px;
+    padding: 48px;
+    color: var(--white);
+    margin-bottom: 40px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-text-container {
+    max-width: 650px;
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-hero-banner h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+}
+
+.welcome-hero-banner p {
+    color: #93c5fd;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* --- GRID DE TARJETAS INTERACTIVAS --- */
+.dashboard-interactive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+}
+
+.dashboard-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+.card-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+}
+
+.dashboard-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.dashboard-card p {
+    color: var(--text-dark-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.card-action-link {
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.2s ease;
+    align-self: flex-start;
+}
+
+.card-action-link:hover {
+    gap: 12px;
+}
+
+/* Variaciones de acento según tarjeta */
+.card-blue .card-icon-wrapper { background-color: #eff6ff; color: var(--color-blue-fifa); }
+.card-blue .card-action-link { color: var(--color-blue-fifa); }
+
+.card-green .card-icon-wrapper { background-color: #f0fdf4; color: var(--color-green-pitch); }
+.card-green .card-action-link { color: var(--color-green-pitch); }
+
+.card-red .card-icon-wrapper { background-color: #fef2f2; color: var(--color-red-passion); }
+.card-red .card-action-link { color: var(--color-red-passion); }
+
+/* Caja de puntaje especial */
+.points-score-box {
+    display: flex;
+    flex-direction: column;
+    background-color: #f8fafc;
+    border: 1px solid var(--border-soft);
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.points-huge-number {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--color-green-pitch);
+    line-height: 1;
+}
+
+.points-label-text {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-dark-muted);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+/* --- RESPONSIVIDAD (MENÚ HAMBURGUESA) --- */
+@media (max-width: 992px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        border-bottom: 1px solid var(--border-soft);
+        padding: 24px;
+        gap: 16px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar-links.responsive-open {
+        display: flex;
+    }
+
+    #menu-user-section, #menu-seguridad-section, #menu-prode-section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .navbar-user-control {
+        border-left: none;
+        border-top: 1px solid var(--border-soft);
+        padding-left: 0;
+        padding-top: 16px;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .btn-logout {
+        width: 100%;
+    }
 }

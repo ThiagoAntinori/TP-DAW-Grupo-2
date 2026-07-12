@@ -1,28 +1,46 @@
 const API_PARTIDO_URL = "http://localhost:5097/api/Partido";
 const API_AUX_EQUIPOS = "http://localhost:5097/api/Equipo";
+let partidoEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    
     protegerRuta(["ADMIN_NEGOCIO"]);
+    inicializarEncabezadosComunes();
 
     const tbody = document.querySelector("#tblMatches tbody");
     if (tbody) {
         cargarGrillaPartidos();
     }
 
-    const formPartido = document.getElementById("formPartido");
-    if (formPartido) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const partidoId = urlParams.get('id');
+    const modal = document.getElementById("modalPartido");
 
+    document.getElementById("btnAbrirCrear").addEventListener("click", async () => {
+        partidoEdicionId = null;
+        document.getElementById("formPartido").reset();
+        document.getElementById("form-title").textContent = "Programar Partido";
+        document.getElementById("form-subtitle").textContent = "Defina los contrincantes y el horario del encuentro";
+        document.getElementById("section-resultado-admin").classList.add("display-none");
+        document.getElementById("btnGuardar").textContent = "Guardar Partido";
+        document.getElementById("form-error").classList.remove("display-block");
+
+        desbloquearCamposFormulario();
         await cargarSelectsEquipos();
+        modal.classList.add("modal-open");
+    });
 
-        if (partidoId) {
-            configurarModoEdicionPartido(partidoId);
-        }
+    document.getElementById("btnCerrarModal").addEventListener("click", () => {
+        modal.classList.remove("modal-open");
+    });
 
-        formPartido.addEventListener("submit", (e) => guardarDatosPartido(e, partidoId));
-    }
+    document.getElementById("formPartido").addEventListener("submit", guardarDatosPartido);
 });
+
+function inicializarEncabezadosComunes() {
+    const username = localStorage.getItem("username") || "Usuario";
+    const lbl = document.getElementById("lblUsername");
+    if (lbl) lbl.textContent = username;
+    if (typeof renderizarMenuPrincipal === "function") renderizarMenuPrincipal();
+}
 
 async function cargarGrillaPartidos() {
     const tbody = document.querySelector("#tblMatches tbody");
@@ -41,7 +59,7 @@ async function cargarGrillaPartidos() {
         tbody.innerHTML = "";
 
         if (partidos.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;">No hay partidos programados en el fixture.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" class="texto-bloqueado celda-centrada">No hay partidos programados en el fixture.</td></tr>`;
             return;
         }
 
@@ -50,35 +68,39 @@ async function cargarGrillaPartidos() {
             const fechaFormateada = new Date(p.fechaHora).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
             
             let resultadoTexto = "vs";
-            let badgeClass = "badge-user";
+            let badgeClass = "badge-user-green";
             if (p.estado === "Finalizado") {
                 resultadoTexto = `${p.golesLocal} - ${p.golesVisitante}`;
-                badgeClass = "badge-admin";
+                badgeClass = "badge-admin-blue";
             }
 
             let accionesHtml = "";
             if (p.estado === "Pendiente") {
                 accionesHtml = `
-                    <button class="btn-action btn-edit" onclick="location.href='form.html?id=${p.id}'">Cambiar Fecha / Cargar Fin</button>
-                    <button class="btn-action btn-delete" onclick="eliminarPartido(${p.id})">Eliminar</button>
+                    <button class="btn btn-secondary btn-row-pill" onclick="abrirEditarPartido(${p.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn btn-logout btn-row-pill" onclick="eliminarPartido(${p.id})"><i class="fa-solid fa-trash-can"></i></button>
                 `;
             } else if (p.estado === "Finalizado") {
                 accionesHtml = `
-                    <button class="btn-action btn-edit" style="background-color: #f59e0b;" onclick="location.href='form.html?id=${p.id}'">Corregir Resultado</button>
+                    <button class="btn btn-secondary btn-row-pill" onclick="abrirEditarPartido(${p.id})"><i class="fa-solid fa-rotate-left"></i></button>
                 `;
             }
 
             tr.innerHTML = `
                 <td>${fechaFormateada}</td>
                 <td><strong>${p.equipoLocal.nombre}</strong> vs <strong>${p.equipoVisitante.nombre}</strong></td>
-                <td style="text-align:center; font-weight:bold; font-size:1.1rem;">${resultadoTexto}</td>
-                <td><span class="badge ${badgeClass}">${p.estado.toUpperCase()}</span></td>
-                <td>${accionesHtml}</td>
+                <td class="celda-centrada"><strong>${resultadoTexto}</strong></td>
+                <td><span class="badge-role ${badgeClass}">${p.estado.toUpperCase()}</span></td>
+                <td>
+                    <div class="row-actions-flex">
+                        ${accionesHtml}
+                    </div>
+                </td>
             `;
             tbody.appendChild(tr);
         });
     } catch (error) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; font-weight:600;">Error al cargar el fixture.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="texto-bloqueado celda-centrada" style="color:var(--color-red-passion);">Error al cargar el fixture.</td></tr>`;
     }
 }
 
@@ -107,10 +129,17 @@ async function cargarSelectsEquipos() {
     }
 }
 
-async function configurarModoEdicionPartido(id) {
+async function abrirEditarPartido(id) {
+    partidoEdicionId = id;
+    const modal = document.getElementById("modalPartido");
+    document.getElementById("formPartido").reset();
     document.getElementById("form-title").textContent = "Cierre o Edición de Partido";
-    document.getElementById("section-resultado-admin").style.display = "block";
+    document.getElementById("section-resultado-admin").classList.remove("display-none");
     document.getElementById("btnGuardar").textContent = "Procesar Cambios";
+    document.getElementById("form-error").classList.remove("display-block");
+
+    desbloquearCamposFormulario();
+    await cargarSelectsEquipos();
 
     try {
         const res = await fetch(`${API_PARTIDO_URL}/${id}`);
@@ -133,15 +162,23 @@ async function configurarModoEdicionPartido(id) {
             document.getElementById("numGolesVisitante").value = p.golesVisitante;
             document.getElementById("form-title").textContent = "Corregir Marcador Oficial";
         }
+        
+        modal.classList.add("modal-open");
     } catch (err) {
-        console.error(err);
+        alert("Fallo al recuperar partido.");
     }
 }
 
-async function guardarDatosPartido(e, idAlterar) {
+function desbloquearCamposFormulario() {
+    document.getElementById("ddlLocal").disabled = false;
+    document.getElementById("ddlVisitante").disabled = false;
+    document.getElementById("txtFechaHora").disabled = false;
+}
+
+async function guardarDatosPartido(e) {
     e.preventDefault();
     const errorDiv = document.getElementById("form-error");
-    errorDiv.style.display = "none";
+    errorDiv.classList.remove("display-block");
 
     const equipoLocalId = parseInt(document.getElementById("ddlLocal").value);
     const equipoVisitanteId = parseInt(document.getElementById("ddlVisitante").value);
@@ -149,31 +186,41 @@ async function guardarDatosPartido(e, idAlterar) {
 
     if (equipoLocalId === equipoVisitanteId) {
         errorDiv.textContent = "Un equipo no puede enfrentarse a sí mismo.";
-        errorDiv.style.display = "block";
+        errorDiv.classList.add("display-block");
+        return;
+    }
+
+    const fechaSeleccionada = new Date(fechaHora);
+    const fechaActual = new Date();
+    if (fechaSeleccionada <= fechaActual) {
+        errorDiv.textContent = "La fecha del partido debe ser posterior a la fecha y hora actual.";
+        errorDiv.classList.add("display-block");
         return;
     }
 
     const token = localStorage.getItem("token");
     let url = API_PARTIDO_URL;
-    let method = idAlterar ? "PUT" : "POST";
+    let method = partidoEdicionId ? "PUT" : "POST";
     let bodyData = { equipoLocalId, equipoVisitanteId, fechaHora };
 
     try {
-        if (idAlterar) {
-            url += `/${idAlterar}`;
+        if (partidoEdicionId) {
+            url += `/${partidoEdicionId}`;
             const golesL = parseInt(document.getElementById("numGolesLocal").value);
             const golesV = parseInt(document.getElementById("numGolesVisitante").value);
 
-            if (golesL >= 0 && golesV >= 0 && document.getElementById("section-resultado-admin").style.display === "block" && confirm("¿Desea cerrar el partido y cargar el resultado final? Esto bloqueará modificaciones posteriores.")) {
-                const resResultado = await fetch(`${API_PARTIDO_URL}/${idAlterar}/resultado`, {
+            const panelResultadoVisible = !document.getElementById("section-resultado-admin").classList.contains("display-none");
+
+            if (golesL >= 0 && golesV >= 0 && panelResultadoVisible && confirm("¿Desea registrar este resultado oficial? En caso de pasar a Finalizado se congelarán las apuestas.")) {
+                const resResultado = await fetch(`${API_PARTIDO_URL}/${partidoEdicionId}/resultado`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                     body: JSON.stringify({ golesLocal: golesL, golesVisitante: golesV })
                 });
                 
                 if (resResultado.ok) {
-                    alert("Partido cerrado y marcador oficial registrado.");
-                    window.location.href = "index.html";
+                    document.getElementById("modalPartido").classList.remove("modal-open");
+                    cargarGrillaPartidos();
                     return;
                 }
             }
@@ -185,17 +232,17 @@ async function guardarDatosPartido(e, idAlterar) {
             body: JSON.stringify(bodyData)
         });
 
-        const result = await res.json();
         if (res.ok) {
-            alert(result.message || "Operación exitosa.");
-            window.location.href = "index.html";
+            document.getElementById("modalPartido").classList.remove("modal-open");
+            cargarGrillaPartidos();
         } else {
+            const result = await res.json();
             errorDiv.textContent = result.message;
-            errorDiv.style.display = "block";
+            errorDiv.classList.add("display-block");
         }
     } catch (err) {
         errorDiv.textContent = "Error de red en el controlador de partidos.";
-        errorDiv.style.display = "block";
+        errorDiv.classList.add("display-block");
     }
 }
 
@@ -207,12 +254,8 @@ async function eliminarPartido(id) {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
-        const res = await response.json();
         if (response.ok) {
-            alert(res.message || "Partido eliminado.");
             cargarGrillaPartidos();
-        } else {
-            alert(res.message);
         }
     } catch (err) {
         alert("Error de conexión.");

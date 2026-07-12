@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     localStorage.setItem("token", result.token);
                     localStorage.setItem("refreshToken", result.refreshToken);
                     localStorage.setItem("username", result.username);
+                    localStorage.setItem("puntaje", result.puntaje ?? 0);
 
                     const baseCliente = obtenerUrlBaseCliente();
                     window.location.href = `${baseCliente}/index.html`; 
@@ -54,6 +55,7 @@ function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("username");
+    localStorage.removeItem("puntaje");
 
     const baseCliente = obtenerUrlBaseCliente();
 

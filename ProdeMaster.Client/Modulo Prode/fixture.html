@@ -4,25 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProdeMaster - Carga de Pronósticos</title>
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/fixture.css">
 </head>
 <body>
-    <div class="testing-container">
-        <a href="../index.html" class="nav-back">← Volver al Panel Principal</a>
-        
-        <header class="content-header">
-            <h1>Fixture y Pronósticos</h1>
-            <p class="date-text">Cargá tus predicciones antes del inicio del partido. ¡Sumás 3 puntos por acierto exacto!</p>
+
+    <div class="app-container">
+        <header class="top-navbar">
+            <div class="navbar-brand">
+                <i class="fa-solid fa-trophy brand-icon"></i>
+                <h2>PRODE<span>MASTER</span></h2>
+            </div>
+
+            <button id="btnHamburger" class="hamburger-menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav id="navbarLinks" class="navbar-links">
+                <div id="menu-user-section" class="display-none">
+                    <a href="fixture.html" class="nav-link active"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
+                    <a href="podio.html" class="nav-link"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
+                </div>
+
+                <div id="menu-seguridad-section" class="display-none">
+                    <a href="../modulo seguridad/usuarios/index.html" class="nav-link"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
+                    <a href="../modulo seguridad/privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
+                </div>
+
+                <div id="menu-prode-section" class="display-none">
+                    <a href="equipos/index.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Equipos</a>
+                    <a href="partidos/index.html" class="nav-link"><i class="fa-solid fa-circle-play"></i> Partidos</a>
+                </div>
+
+                <div class="navbar-user-control">
+                    <span class="user-welcome">Bienvenido, <strong id="lblUsername"></strong></span>
+                    <button id="btnLogout" class="btn btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+                </div>
+            </nav>
         </header>
 
-        <div id="fixture-error" class="alert-error"></div>
+        <main class="main-content">
+            <div class="view-body">
+                <header class="content-header">
+                    <h1>Fixture y Pronósticos</h1>
+                    <p>Calculá tus predicciones para los partidos de la jornada mundialista antes del inicio del juego oficial.</p>
+                </header>
 
-        <section class="fixture-cards-container" id="panel-fixture">
-            <p class="texto-bloqueado celda-centrada">Buscando partidos disponibles en el servidor...</p>
-        </section>
+                <div id="fixture-error" class="alert-error"></div>
+
+                <section class="fixture-cards-wrapper" id="panel-fixture">
+                    <div class="loading-state-card">
+                        <i class="fa-solid fa-spinner fa-spin loading-spinner-icon"></i>
+                        <p class="texto-bloqueado celda-centrada">Sincronizando fixture oficial con la central...</p>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
 
     <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/main.js"></script>
     <script src="../assets/js/fixture.js"></script>
 </body>
 </html>

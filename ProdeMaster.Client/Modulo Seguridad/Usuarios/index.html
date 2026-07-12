@@ -3,61 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProdeMaster Testing - Lista de Usuarios</title>
-    <link rel="stylesheet" href="../../Assets/CSS/main.css">
-    <style>
-        .testing-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .nav-back {
-            margin-bottom: 20px;
-            display: inline-block;
-            color: #0284c7;
-            text-decoration: none;
-            font-weight: 600;
-        }
-    </style>
+    <title>ProdeMaster - Control de Accesos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/seguridad.css">
 </head>
 <body>
 
-    <div class="testing-container">
-        <a href="../../index.html" class="nav-back">← Volver al Panel Principal</a>
+    <div class="app-container">
         
-        <header class="content-header">
-            <h1>Testing: Gestión de Usuarios</h1>
-            <p class="date-text">Consumo directo desde ASP.NET Web API</p>
+        <header class="top-navbar">
+            <div class="navbar-brand">
+                <i class="fa-solid fa-trophy brand-icon"></i>
+                <h2>PRODE<span>MASTER</span></h2>
+            </div>
+
+            <button id="btnHamburger" class="hamburger-menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav id="navbarLinks" class="navbar-links">
+                <div id="menu-user-section" class="display-none">
+                    <a href="../../modulo prode/fixture.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
+                    <a href="../../modulo prode/podio.html" class="nav-link"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
+                </div>
+
+                <div id="menu-seguridad-section" class="display-none">
+                    <a href="index.html" class="nav-link active"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
+                    <a href="../privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
+                </div>
+
+                <div id="menu-prode-section" class="display-none">
+                    <a href="../../modulo prode/equipos/index.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Equipos</a>
+                    <a href="../../modulo prode/partidos/index.html" class="nav-link"><i class="fa-solid fa-circle-play"></i> Partidos</a>
+                </div>
+
+                <div class="navbar-user-control">
+                    <span class="user-welcome">Bienvenido, <strong id="lblUsername"></strong></span>
+                    <button id="btnLogout" class="btn btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+                </div>
+            </nav>
         </header>
 
-        <section class="action-bar">
-            <div class="search-box">
-                <input type="text" id="txtSearch" placeholder="Buscar por nombre de usuario... [ENTER]">
-                <button id="btnSearch" class="btn btn-secondary">Buscar 🔍</button>
-            </div>
-            <a href="form.html" class="btn btn-success">+ Nuevo Usuario</a>
-        </section>
+        <main class="main-content">
+            <div class="view-body">
+                
+                <header class="content-header">
+                    <h1>Control de Usuarios</h1>
+                    <p>Administración y asignación de credenciales operativas del ecosistema universitario.</p>
+                </header>
 
-        <section class="table-container">
-            <table class="data-table" id="tblUsers">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre de Usuario</th>
-                        <th>Privilegios Asignados</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="4" style="text-align:center; color:#64748b;">Cargando usuarios de la base de datos...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+                <section class="analytics-action-bar">
+                    <div class="analytics-flex-wrapper">
+                        <div class="interactive-search-box">
+                            <input type="text" id="txtSearch" placeholder="Buscar por nombre de usuario...">
+                            <button id="btnSearch" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                        <button id="btnAbrirCrear" class="btn btn-success"><i class="fa-solid fa-user-plus"></i> Registrar Usuario</button>
+                    </div>
+                </section>
+
+                <div class="premium-table-card">
+                    <table class="premium-table" id="tblUsers">
+                        <thead>
+                            <tr>
+                                <th class="col-id-center">ID</th>
+                                <th>Nombre de Usuario</th>
+                                <th>Privilegios Otorgados</th>
+                                <th class="col-actions-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="texto-bloqueado celda-centrada">Sincronizando con la base de datos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="pagination-container">
+                        <span class="pagination-info">Mostrando registros</span>
+                        <div class="pagination-buttons">
+                            <button class="btn btn-page-nav" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="btn btn-page-nav" disabled><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
-    <script src="../../Assets/JS/auth.js"></script>
-    <script src="../../Assets/JS/usuarios.js"></script>
+    <div id="modalUsuario" class="modal-overlay">
+        <div class="modal-window">
+            <header class="modal-header">
+                <h3 id="form-title">Registrar Usuario</h3>
+                <p id="form-subtitle">Parámetros operativos de la cuenta</p>
+            </header>
+            <div class="modal-body">
+                <div id="form-error" class="alert-error"></div>
+                <form id="formUsuario">
+                    <div class="form-field-block">
+                        <label for="txtUsername">Nombre del Operario</label>
+                        <input type="text" id="txtUsername" required placeholder="Ej: marcos.perez">
+                    </div>
+                    <div class="form-field-block" id="secPassword">
+                        <label for="txtPassword">Palabra Clave (Contraseña)</label>
+                        <input type="password" id="txtPassword" placeholder="Mínimo 6 caracteres seguros">
+                    </div>
+                    <div class="form-field-block">
+                        <label>Permisos de Infraestructura</label>
+                        <div class="scrolling-privilege-panel" id="containerPrivileges"></div>
+                    </div>
+                    <div class="form-actions-row">
+                        <button type="button" id="btnCerrarModal" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" id="btnGuardar" class="btn btn-success">Guardar Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/usuarios.js"></script>
 </body>
 </html>

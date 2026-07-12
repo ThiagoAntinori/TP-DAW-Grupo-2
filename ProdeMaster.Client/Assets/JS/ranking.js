@@ -30,21 +30,21 @@ async function cargarTablaRanking() {
             const tr = document.createElement("tr");
             const puesto = indice + 1;
             
-            let puestoHtml = `<span class="puesto-podio">${puesto}</span>`;
-            if (puesto === 1) puestoHtml = `<span class="puesto-podio puesto-oro">🥇 1º</span>`;
-            if (puesto === 2) puestoHtml = `<span class="puesto-podio puesto-plata">🥈 2º</span>`;
-            if (puesto === 3) puestoHtml = `<span class="puesto-podio puesto-bronce">🥉 3º</span>`;
+            let puestoHtml = `<span class="puesto-podio">${puesto}º</span>`;
+            if (puesto === 1) puestoHtml = `<span class="puesto-podio puesto-oro"><i class="fa-solid fa-award"></i> 1º</span>`;
+            if (puesto === 2) puestoHtml = `<span class="puesto-podio puesto-plata"><i class="fa-solid fa-award"></i> 2º</span>`;
+            if (puesto === 3) puestoHtml = `<span class="puesto-podio puesto-bronce"><i class="fa-solid fa-award"></i> 3º</span>`;
 
             tr.innerHTML = `
                 <td class="celda-centrada">${puestoHtml}</td>
                 <td><strong>${fila.usuario}</strong></td>
-                <td class="celda-centrada"><span class="badge" style="background-color:#f1f5f9; color:#475569;">🎯 ${fila.plenos}</span></td>
+                <td class="celda-centrada"><span class="badge">${fila.plenos}</span></td>
                 <td class="puntos-destacados">${fila.puntos} pts</td>
             `;
             tbody.appendChild(tr);
         });
 
     } catch (error) {
-        tbody.innerHTML = `<tr><td colspan="4" class="texto-bloqueado celda-centrada" style="color:#ef4444; font-weight:600;">Error al sincronizar el ranking con la base de datos.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="texto-bloqueado celda-centrada">Error al sincronizar el ranking con la base de datos.</td></tr>`;
     }
 }

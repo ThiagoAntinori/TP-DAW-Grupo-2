@@ -3,40 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProdeMaster - Fixture</title>
-    <link rel="stylesheet" href="../../Assets/CSS/main.css">
+    <title>ProdeMaster - Gestión de Partidos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/fixture.css">
 </head>
 <body>
-    <div class="testing-container">
-        <a href="../../index.html" class="nav-back">← Volver al Panel Principal</a>
-        <header class="content-header">
-            <h1>Gestión de Partidos (Fixture)</h1>
-            <p class="date-text">Programación de partidos y carga de resultados oficiales</p>
+
+    <div class="app-container">
+        <header class="top-navbar">
+            <div class="navbar-brand">
+                <i class="fa-solid fa-trophy brand-icon"></i>
+                <h2>PRODE<span>MASTER</span></h2>
+            </div>
+
+            <button id="btnHamburger" class="hamburger-menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav id="navbarLinks" class="navbar-links">
+                <div id="menu-user-section" class="display-none">
+                    <a href="../fixture.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
+                    <a href="../podio.html" class="nav-link"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
+                </div>
+
+                <div id="menu-seguridad-section" class="display-none">
+                    <a href="../../modulo seguridad/usuarios/index.html" class="nav-link"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
+                    <a href="../../modulo seguridad/privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
+                </div>
+
+                <div id="menu-prode-section" class="display-none">
+                    <a href="../equipos/index.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Equipos</a>
+                    <a href="index.html" class="nav-link active"><i class="fa-solid fa-circle-play"></i> Partidos</a>
+                </div>
+
+                <div class="navbar-user-control">
+                    <span class="user-welcome">Bienvenido, <strong id="lblUsername"></strong></span>
+                    <button id="btnLogout" class="btn btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+                </div>
+            </nav>
         </header>
-        <section class="action-bar">
-            <div style="flex:1;"></div>
-            <a href="form.html" class="btn btn-success">+ Programar Partido</a>
-        </section>
-        <section class="table-container">
-            <table class="data-table" id="tblMatches">
-                <thead>
-                    <tr>
-                        <th>Fecha y Hora</th>
-                        <th>Partido</th>
-                        <th>Resultado Real</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="5" style="text-align:center; color:#64748b;">Cargando calendario desde el servidor...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+
+        <main class="main-content">
+            <div class="view-body">
+                <header class="content-header">
+                    <h1>Gestión de Partidos</h1>
+                    <p>Cronograma oficial del fixture, control de estados de juego y carga de resultados definitivos.</p>
+                </header>
+
+                <section class="analytics-action-bar">
+                    <div class="analytics-flex-wrapper">
+                        <div class="interactive-search-box">
+                            <input type="text" id="txtSearch" placeholder="Buscar partidos programados...">
+                            <button id="btnSearch" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                        <button id="btnAbrirCrear" class="btn btn-success"><i class="fa-solid fa-plus"></i> Programar Partido</button>
+                    </div>
+                </section>
+
+                <div class="premium-table-card">
+                    <table class="premium-table" id="tblMatches">
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Encuentro</th>
+                                <th class="celda-centrada">Resultado Real</th>
+                                <th>Estado</th>
+                                <th class="col-actions-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="texto-bloqueado celda-centrada">Sincronizando el calendario con el servidor...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="pagination-container">
+                        <span class="pagination-info">Mostrando registros</span>
+                        <div class="pagination-buttons">
+                            <button class="btn btn-page-nav" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="btn btn-page-nav" disabled><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-    <script src="../../Assets/JS/auth.js"></script>
-    <script src="../../Assets/JS/partidos.js"></script>
+
+    <div id="modalPartido" class="modal-overlay">
+        <div class="modal-window">
+            <header class="modal-header">
+                <h3 id="form-title">Programar Partido</h3>
+                <p id="form-subtitle">Defina los contrincantes y el horario del encuentro</p>
+            </header>
+            <div class="modal-body">
+                <div id="form-error" class="alert-error"></div>
+                <form id="formPartido">
+                    <div class="form-field-block">
+                        <label for="ddlLocal">Equipo Local</label>
+                        <select id="ddlLocal" required class="input-select-premium"></select>
+                    </div>
+                    <div class="form-field-block">
+                        <label for="ddlVisitante">Equipo Visitante</label>
+                        <select id="ddlVisitante" required class="input-select-premium"></select>
+                    </div>
+                    <div class="form-field-block">
+                        <label for="txtFechaHora">Fecha y Hora del Partido</label>
+                        <input type="datetime-local" id="txtFechaHora" required>
+                    </div>
+                    
+                    <div id="section-resultado-admin" class="display-none results-closure-panel">
+                        <h3>Cargar Marcador Final (Cierre Oficial)</h3>
+                        <div class="results-input-row">
+                            <div class="score-input-item">
+                                <label for="numGolesLocal">Goles Local</label>
+                                <input type="number" id="numGolesLocal" value="0" min="0">
+                            </div>
+                            <div class="score-input-item">
+                                <label for="numGolesVisitante">Goles Visitante</label>
+                                <input type="number" id="numGolesVisitante" value="0" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-row">
+                        <button type="button" id="btnCerrarModal" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" id="btnGuardar" class="btn btn-success">Guardar Partido</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/partidos.js"></script>
 </body>
 </html>

@@ -1,43 +1,49 @@
 const API_PRIVILEGIOS_URL = "http://localhost:5097/api/Usuarios/privilegios"; 
+let privilegioEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
     
     protegerRuta(["ADMIN_SEGURIDAD"]);
-    
+    inicializarEncabezadosComunes();
+
     const tbody = document.querySelector("#tblPrivileges tbody");
     if (tbody) {
         cargarGrillaPrivilegios();
 
-        const btnSearch = document.getElementById("btnSearch");
-        if (btnSearch) {
-            btnSearch.addEventListener("click", () => {
-                const query = document.getElementById("txtSearch").value.trim();
-                cargarGrillaPrivilegios(query);
-            });
-        }
+        document.getElementById("btnSearch").addEventListener("click", () => {
+            cargarGrillaPrivilegios(document.getElementById("txtSearch").value.trim());
+        });
 
-        const txtSearch = document.getElementById("txtSearch");
-        if (txtSearch) {
-            txtSearch.addEventListener("keypress", (e) => {
-                if (e.key === "Enter") {
-                    cargarGrillaPrivilegios(txtSearch.value.trim());
-                }
-            });
-        }
+        document.getElementById("txtSearch").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") cargarGrillaPrivilegios(e.target.value.trim());
+        });
     }
 
-    const formPrivilegio = document.getElementById("formPrivilegio");
-    if (formPrivilegio) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const privilegeId = urlParams.get('id');
+    // CONTROL DEL MODAL
+    const modal = document.getElementById("modalPrivilegio");
 
-        if (privilegeId) {
-            configurarModoEdicionPrivilegio(privilegeId);
-        }
+    document.getElementById("btnAbrirCrear").addEventListener("click", () => {
+        privilegioEdicionId = null;
+        document.getElementById("formPrivilegio").reset();
+        document.getElementById("form-title").textContent = "Registrar Privilegio";
+        document.getElementById("form-subtitle").textContent = "Defina un nuevo permiso operativo";
+        document.getElementById("form-error").classList.remove("display-block");
+        modal.classList.add("modal-open");
+    });
 
-        formPrivilegio.addEventListener("submit", (e) => guardarDatosPrivilegio(e, privilegeId));
-    }
+    document.getElementById("btnCerrarModal").addEventListener("click", () => {
+        modal.classList.remove("modal-open");
+    });
+
+    document.getElementById("formPrivilegio").addEventListener("submit", guardarDatosPrivilegio);
 });
+
+function inicializarEncabezadosComunes() {
+    const username = localStorage.getItem("username") || "Usuario";
+    const lbl = document.getElementById("lblUsername");
+    if (lbl) lbl.textContent = username;
+    if (typeof renderizarMenuPrincipal === "function") renderizarMenuPrincipal();
+}
 
 async function cargarGrillaPrivilegios(searchQuery = "") {
     const tbody = document.querySelector("#tblPrivileges tbody");
@@ -49,11 +55,7 @@ async function cargarGrillaPrivilegios(searchQuery = "") {
     try {
         const token = localStorage.getItem("token");
         const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` 
-            }
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
         });
 
         if (!response.ok) throw new Error();
@@ -61,110 +63,111 @@ async function cargarGrillaPrivilegios(searchQuery = "") {
         tbody.innerHTML = "";
 
         if (privilegios.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#64748b;">No se encontraron privilegios registrados.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="3" class="texto-bloqueado celda-centrada">No se encontraron registros asociados.</td></tr>`;
             return;
         }
 
         privilegios.forEach(priv => {
             const tr = document.createElement("tr");
-
             tr.innerHTML = `
-                <td>${priv.id}</td>
+                <td class="col-id-center">${priv.id}</td>
                 <td><strong>${priv.description}</strong></td>
                 <td>
-                    <button class="btn-action btn-edit" onclick="location.href='form.html?id=${priv.id}'">✏️ Editar</button>
-                    <button class="btn-action btn-delete" onclick="eliminarPrivilegio(${priv.id}, '${priv.description}')">🗑️ Eliminar</button>
+                    <div class="row-actions-flex">
+                        <button class="btn btn-secondary btn-row-pill" onclick="abrirEditarPrivilegio(${priv.id})"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-logout btn-row-pill" onclick="eliminarPrivilegio(${priv.id}, '${priv.description}')"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                 </td>
             `;
             tbody.appendChild(tr);
         });
     } catch (error) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#ef4444; font-weight:600;">Error de conexión con el servidor.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" class="texto-bloqueado celda-centrada" style="color:var(--color-red-passion);">Error de sincronización de catálogos.</td></tr>`;
     }
 }
 
-async function eliminarPrivilegio(id, description) {
-    if (id === 1 || id === 2 || id === 3) {
-        alert("Operación denegada: No se pueden eliminar los privilegios base del sistema.");
-        return;
-    }
-    if (!confirm(`¿Está seguro de que desea eliminar el privilegio "${description}"?`)) return;
+async function abrirEditarPrivilegio(id) {
+    privilegioEdicionId = id;
+    const modal = document.getElementById("modalPrivilegio");
+    document.getElementById("formPrivilegio").reset();
+    document.getElementById("form-title").textContent = "Modificar Privilegio";
+    document.getElementById("form-subtitle").textContent = `Editando privilegio ID: ${id}`;
+    document.getElementById("form-error").classList.remove("display-block");
 
     try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${API_PRIVILEGIOS_URL}/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
+        const res = await fetch(`${API_PRIVILEGIOS_URL}/${id}`, {
+            headers: { "Authorization": `Bearer ${token}` }
         });
-
-        const result = await response.json();
-        if (response.ok) {
-            alert(result.message || "Privilegio eliminado.");
-            cargarGrillaPrivilegios();
-        } else {
-            alert(result.message);
-        }
-    } catch (error) {
-        alert("Error de red al conectar con la Web API.");
-    }
-}
-
-async function configurarModoEdicionPrivilegio(id) {
-    document.getElementById("form-title").textContent = "Modificar Privilegio";
-    document.getElementById("form-subtitle").textContent = `Editando privilegio con ID: ${id}`;
-
-    try {
-        const res = await fetch(`${API_PRIVILEGIOS_URL}/${id}`);
-        if(!res.ok) return;
+        if (!res.ok) return;
         const privilegio = await res.json();
 
         document.getElementById("txtDescription").value = privilegio.description;
+        modal.classList.add("modal-open");
     } catch (err) {
-        console.error(err);
+        alert("Fallo de comunicación interna.");
     }
 }
 
-async function guardarDatosPrivilegio(e, idAlterar) {
+async function guardarDatosPrivilegio(e) {
     e.preventDefault();
     const errorDiv = document.getElementById("form-error");
-    errorDiv.style.display = "none";
+    errorDiv.classList.remove("display-block");
 
     const description = document.getElementById("txtDescription").value.trim().toUpperCase();
-    
     let url = API_PRIVILEGIOS_URL;
     let method = "POST";
     let bodyData = { description };
 
-    if (idAlterar) {
+    if (privilegioEdicionId) {
         method = "PUT";
-        url += `/${idAlterar}`;
+        url += `/${privilegioEdicionId}`;
     }
 
     try {
         const token = localStorage.getItem("token");
         const res = await fetch(url, {
             method: method,
-            headers: { 
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(bodyData)
         });
 
         const result = await res.json();
 
         if (res.ok) {
-            alert(result.message || "Operación realizada con éxito.");
-            window.location.href = "index.html";
+            document.getElementById("modalPrivilegio").classList.remove("modal-open");
+            cargarGrillaPrivilegios();
         } else {
             errorDiv.textContent = result.message;
-            errorDiv.style.display = "block";
+            errorDiv.classList.add("display-block");
         }
     } catch (err) {
-        errorDiv.textContent = "Error de conexión con la Web API.";
-        errorDiv.style.display = "block";
+        errorDiv.textContent = "Error de red en el motor de seguridad.";
+        errorDiv.classList.add("display-block");
+    }
+}
+
+async function eliminarPrivilegio(id, description) {
+    if (id === 1 || id === 2 || id === 3) {
+        alert("Operación denegada: Bloque base del sistema.");
+        return;
+    }
+    if (!confirm(`¿Remover privilegio "${description}"?`)) return;
+
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${API_PRIVILEGIOS_URL}/${id}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            cargarGrillaPrivilegios();
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        alert("Error de red.");
     }
 }

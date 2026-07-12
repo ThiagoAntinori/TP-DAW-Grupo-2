@@ -1,0 +1,273 @@
+@import url('main.css');
+
+/* --- CONTROL DE MODALES (VENTANAS EMERGENTES) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.modal-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-window {
+    background-color: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.modal-open .modal-window {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.modal-header h3 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--color-blue-fifa);
+}
+
+.modal-header p {
+    font-size: 0.85rem;
+    color: var(--text-dark-muted);
+    margin-top: 4px;
+}
+
+.modal-body {
+    padding: 32px;
+}
+
+/* --- FORMULARIOS DENTRO DEL MODAL --- */
+.form-field-block {
+    margin-bottom: 20px;
+}
+
+.form-field-block label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-field-block input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    background-color: var(--bg-surface-clear);
+    transition: all 0.2s ease;
+}
+
+.form-field-block input:focus {
+    background-color: var(--white);
+    border-color: var(--color-blue-fifa);
+    box-shadow: 0 0 0 3px rgba(0, 75, 191, 0.1);
+}
+
+.form-actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 28px;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 20px;
+}
+
+/* --- PANELES ANALÍTICOS Y FILTROS --- */
+.analytics-action-bar {
+    background-color: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 16px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+}
+
+.analytics-flex-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.interactive-search-box {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-surface-clear);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 2px 4px 2px 12px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.interactive-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    padding: 8px 0;
+    font-size: 0.9rem;
+}
+
+/* --- DISEÑO DE TABLAS ULTRA LIMPIO --- */
+.premium-table-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+}
+
+.premium-table th {
+    background-color: #f8fafc;
+    color: var(--text-dark-muted);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 24px;
+    border-bottom: 2px solid var(--border-soft);
+}
+
+.premium-table td {
+    padding: 14px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.premium-table tbody tr:hover td {
+    background-color: #f8fafc;
+}
+
+.premium-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.premium-table td strong {
+    color: var(--color-blue-fifa);
+    font-weight: 600;
+}
+
+/* Columnas Estructurales */
+.col-id-center { width: 90px; text-align: center; font-weight: 700; color: var(--text-dark-muted); }
+.col-actions-right { width: 24px; text-align: right; }
+
+.row-actions-flex {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.btn-row-pill {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* --- BADGES DE ROLES --- */
+.badge-role {
+    display: inline-flex;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 4px;
+    margin-right: 4px;
+}
+
+.badge-admin-blue { background-color: #eff6ff; color: var(--color-blue-fifa); border: 1px solid #bfdbfe; }
+.badge-user-green { background-color: #f0fdf4; color: var(--color-green-pitch); border: 1px solid #bbf7d0; }
+
+/* Contenedor de Checkboxes en Modales */
+.scrolling-privilege-panel {
+    background-color: var(--bg-surface-clear);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 16px;
+    max-height: 180px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.custom-check-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.custom-check-row input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-green-pitch);
+}
+
+/* --- PAGINADOR --- */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: #f8fafc;
+    border-top: 1px solid var(--border-soft);
+}
+
+.pagination-info {
+    font-size: 0.85rem;
+    color: var(--text-dark-muted);
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-page-nav {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    background-color: var(--white);
+    border: 1px solid var(--border-soft);
+    color: var(--text-dark-main);
+}
+
+.btn-page-nav:hover:not(:disabled) {
+    background-color: #f1f5f9;
+}

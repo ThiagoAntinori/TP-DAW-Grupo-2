@@ -3,101 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProdeMaster - Panel Principal</title>
+    <title>ProdeMaster - Mundial 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
-    
-    <script>
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'login.html';
-        }
-    </script>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2>ProdeMaster</h2>
-                <span class="user-badge" id="lblUsername">Usuario</span>
+    <header class="top-navbar">
+        <div class="navbar-brand">
+            <i class="fa-solid fa-trophy brand-icon"></i>
+            <h2>PRODE<span>MASTER</span></h2>
+        </div>
+
+        <button id="btnHamburger" class="hamburger-menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav id="navbarLinks" class="navbar-links">
+            <div id="menu-user-section" class="display-none">
+                <a href="modulo prode/fixture.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
+                <a href="modulo prode/podio.html" class="nav-link"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
             </div>
+
+            <div id="menu-seguridad-section" class="display-none">
+                <a href="modulo seguridad/usuarios/index.html" class="nav-link"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
+                <a href="modulo seguridad/privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
+            </div>
+
+            <div id="menu-prode-section" class="display-none">
+                <a href="modulo prode/equipos/index.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Equipos</a>
+                <a href="modulo prode/partidos/index.html" class="nav-link"><i class="fa-solid fa-circle-play"></i> Partidos</a>
+            </div>
+
+            <div class="navbar-user-control">
+                <span class="user-welcome">Bienvenido, <strong id="lblUsername"></strong></span>
+                <button id="btnLogout" class="btn btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-layout-clear">
+        <div class="welcome-hero-banner">
+            <div class="hero-text-container">
+                <h1>Estadio Virtual de Pronósticos</h1>
+                <p>Viví la pasión de la Copa del Mundo 2026. Registrá tus predicciones, sumá puntos por tendencias o aciertos exactos y liderá el podio del torneo universitario.</p>
+            </div>
+        </div>
+
+        <section class="dashboard-interactive-grid">
             
-            <nav id="dynamic-nav" class="sidebar-menu">
-                <div id="menu-user-section">
-                    <p class="menu-label">Mi Espacio</p>
-                    <ul>
-                        <li><a href="modulo prode/fixture.html" class="active">Jugar Prode</a></li>
-                        <li><a href="modulo prode/podio.html">Tabla de Posiciones</a></li>
-                    </ul>
+            <div class="dashboard-card card-blue">
+                <div class="card-icon-wrapper">
+                    <i class="fa-solid fa-gamepad"></i>
                 </div>
-
-                <div id="menu-seguridad-section" class="menu-group-admin" style="display: none;">
-                    <p class="menu-label">Administración de Seguridad</p>
-                    <ul>
-                        <li><a href="modulo seguridad/usuarios/index.html">Gestionar Usuarios</a></li>
-                        <li><a href="modulo seguridad/privilegios/index.html">Gestionar Privilegios</a></li>
-                    </ul>
-                </div>
-
-                <div id="menu-negocio-section" class="menu-group-admin" style="display: none;">
-                    <p class="menu-label">Administración del Torneo</p>
-                    <ul>
-                        <li><a href="modulo prode/partidos/index.html">Gestionar Partidos</a></li>
-                        <li><a href="modulo prode/equipos/index.html">Gestionar Equipos</a></li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="sidebar-footer">
-                <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+                <h3>Jugar Prode</h3>
+                <p>Cargá tus resultados estimados para los próximos encuentros antes del pitazo inicial de la jornada.</p>
+                <a href="modulo prode/fixture.html" class="card-action-link">Acceder al Fixture <i class="fa-solid fa-arrow-right"></i></a>
             </div>
-        </aside>
 
-        <main class="main-content">
-            <header class="content-header">
-                <h1>Bienvenido al Panel Principal</h1>
-                <p class="date-text">Temporada Actual 2026</p>
-            </header>
-
-            <section class="dashboard-grid">
-                
-                <div class="card card-primary">
-                    <h3>Próxima Fecha</h3>
-                    <p class="card-desc">Carga tus pronósticos antes de que comiencen los partidos de la jornada.</p>
-                    <a href="prode/fixture.html" class="card-link">Ir al Fixture →</a>
+            <div class="dashboard-card card-green">
+                <div class="card-icon-wrapper">
+                    <i class="fa-solid fa-star"></i>
                 </div>
-
-                <div class="card card-success">
-                    <h3>Tu Puntaje</h3>
-                    <div class="score-display">
-                        <span class="score-number">--</span>
-                        <span class="score-text">puntos acumulados</span>
-                    </div>
-                    <a href="prode/podio.html" class="card-link">Ver Ranking Global →</a>
+                <h3>Tu Rendimiento</h3>
+                <div class="points-score-box">
+                    <span id="lblUserPoints" class="points-huge-number">--</span>
+                    <span class="points-label-text">Puntos Totales</span>
                 </div>
-            </section>
-        </main>
+                <a href="modulo prode/podio.html" class="card-action-link">Ver mis estadísticas <i class="fa-solid fa-chart-line"></i></a>
+            </div>
 
-    </div>
+            <div class="dashboard-card card-red">
+                <div class="card-icon-wrapper">
+                    <i class="fa-solid fa-medal"></i>
+                </div>
+                <h3>Ranking Global</h3>
+                <p>Monitoreá la tabla de posiciones general de la competencia y compará tu nivel con el de otros jugadores.</p>
+                <a href="modulo prode/podio.html" class="card-action-link">Visualizar Podio <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
 
+        </section>
+    </main>
+    
     <script src="assets/js/auth.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const username = localStorage.getItem('username') || 'Usuario';
-            document.getElementById('lblUsername').textContent = username;
-
-            renderizarMenuPrincipal();
-
-            document.getElementById('btnLogout').addEventListener('click', () => {
-                if (typeof logout === 'function') {
-                    logout();
-                } else {
-                    localStorage.clear();
-                    window.location.href = 'login.html';
-                }
-            });
-        });
-    </script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -1,39 +1,48 @@
 const API_EQUIPO_URL = "http://localhost:5097/api/Equipo";
+let equipoEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    
     protegerRuta(["ADMIN_NEGOCIO"]);
+    inicializarEncabezadosComunes();
 
     const tbody = document.querySelector("#tblTeams tbody");
     if (tbody) {
         cargarGrillaEquipos();
 
-        const btnSearch = document.getElementById("btnSearch");
-        if (btnSearch) {
-            btnSearch.addEventListener("click", () => {
-                filtrarTablaEquipos();
-            });
-        }
+        document.getElementById("btnSearch").addEventListener("click", () => {
+            filtrarTablaEquipos();
+        });
 
-        const txtSearch = document.getElementById("txtSearch");
-        if (txtSearch) {
-            txtSearch.addEventListener("keypress", (e) => {
-                if (e.key === "Enter") filtrarTablaEquipos();
-            });
-        }
+        document.getElementById("txtSearch").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") filtrarTablaEquipos();
+        });
     }
 
-    const formEquipo = document.getElementById("formEquipo");
-    if (formEquipo) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const equipoId = urlParams.get('id');
+    const modal = document.getElementById("modalEquipo");
 
-        if (equipoId) {
-            configurarModoEdicionEquipo(equipoId);
-        }
+    document.getElementById("btnAbrirCrear").addEventListener("click", () => {
+        equipoEdicionId = null;
+        document.getElementById("formEquipo").reset();
+        document.getElementById("form-title").textContent = "Crear Nuevo Equipo";
+        document.getElementById("form-subtitle").textContent = "Complete los datos institucionales del club";
+        document.getElementById("form-error").classList.remove("display-block");
+        modal.classList.add("modal-open");
+    });
 
-        formEquipo.addEventListener("submit", (e) => guardarDatosEquipo(e, equipoId));
-    }
+    document.getElementById("btnCerrarModal").addEventListener("click", () => {
+        modal.classList.remove("modal-open");
+    });
+
+    document.getElementById("formEquipo").addEventListener("submit", guardarDatosEquipo);
 });
+
+function inicializarEncabezadosComunes() {
+    const username = localStorage.getItem("username") || "Usuario";
+    const lbl = document.getElementById("lblUsername");
+    if (lbl) lbl.textContent = username;
+    if (typeof renderizarMenuPrincipal === "function") renderizarMenuPrincipal();
+}
 
 async function cargarGrillaEquipos() {
     const tbody = document.querySelector("#tblTeams tbody");
@@ -52,13 +61,13 @@ async function cargarGrillaEquipos() {
         tbody.innerHTML = "";
 
         if (equipos.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;">No hay equipos registrados.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" class="texto-bloqueado celda-centrada">No hay equipos registrados.</td></tr>`;
             return;
         }
 
         renderizarFilasEquipos(equipos);
     } catch (error) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; font-weight:600;">Error de conexión con el servidor.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="texto-bloqueado celda-centrada" style="color:var(--color-red-passion);">Error de conexión con la Web API.</td></tr>`;
     }
 }
 
@@ -67,15 +76,17 @@ function renderizarFilasEquipos(equipos) {
     tbody.innerHTML = "";
     equipos.forEach(eq => {
         const tr = document.createElement("tr");
-        const escudoHtml = eq.escudoUrl ? `<img src="${eq.escudoUrl}" alt="${eq.nombre}" style="width:32px; height:32px; object-fit:contain;">` : `<span>-</span>`;
+        const escudoHtml = eq.escudoUrl ? `<img src="${eq.escudoUrl}" alt="${eq.nombre}" class="team-escudo-thumbnail">` : `<span>-</span>`;
         tr.innerHTML = `
-            <td>${eq.id}</td>
-            <td style="text-align:center;">${escudoHtml}</td>
+            <td class="col-id-center">${eq.id}</td>
+            <td class="col-escudo-center">${escudoHtml}</td>
             <td><strong>${eq.nombre}</strong></td>
-            <td><span class="badge">${eq.abreviatura}</span></td>
+            <td><span class="badge-abbreviation">${eq.abreviatura}</span></td>
             <td>
-                <button class="btn-action btn-edit" onclick="location.href='form.html?id=${eq.id}'">✏️ Editar</button>
-                <button class="btn-action btn-delete" onclick="eliminarEquipo(${eq.id}, '${eq.nombre}')">🗑️ Eliminar</button>
+                <div class="row-actions-flex">
+                    <button class="btn btn-secondary btn-row-pill" onclick="abrirEditarEquipo(${eq.id})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-logout btn-row-pill" onclick="eliminarEquipo(${eq.id}, '${eq.nombre}')"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
             </td>
         `;
         tbody.appendChild(tr);
@@ -89,11 +100,79 @@ function filtrarTablaEquipos() {
     filas.forEach(fila => {
         const nombreCelda = fila.children[2]?.textContent.toLowerCase() || "";
         if (nombreCelda.includes(query)) {
-            fila.style.display = "";
-        } else if(filas.length > 1 || fila.children.length > 1) {
-            fila.style.display = "none";
+            fila.classList.remove("display-none");
+        } else if (filas.length > 1 || fila.children.length > 1) {
+            fila.classList.add("display-none");
         }
     });
+}
+
+async function abrirEditarEquipo(id) {
+    equipoEdicionId = id;
+    const modal = document.getElementById("modalEquipo");
+    document.getElementById("formEquipo").reset();
+    document.getElementById("form-title").textContent = "Modificar Equipo";
+    document.getElementById("form-subtitle").textContent = `Editando ID: ${id}`;
+    document.getElementById("form-error").classList.remove("display-block");
+
+    try {
+        const res = await fetch(`${API_EQUIPO_URL}/${id}`);
+        if (!res.ok) return;
+        const eq = await res.json();
+
+        document.getElementById("txtNombre").value = eq.nombre;
+        document.getElementById("txtAbreviatura").value = eq.abreviatura;
+        document.getElementById("txtEscudoUrl").value = eq.escudoUrl;
+
+        modal.classList.add("modal-open");
+    } catch (err) {
+        alert("Fallo al recuperar datos.");
+    }
+}
+
+async function guardarDatosEquipo(e) {
+    e.preventDefault();
+    const errorDiv = document.getElementById("form-error");
+    errorDiv.classList.remove("display-block");
+
+    const nombre = document.getElementById("txtNombre").value.trim();
+    const abreviatura = document.getElementById("txtAbreviatura").value.trim().toUpperCase();
+    const escudoUrl = document.getElementById("txtEscudoUrl").value.trim();
+
+    let url = API_EQUIPO_URL;
+    let method = "POST";
+    let bodyData = { nombre, abreviatura, escudoUrl };
+
+    if (equipoEdicionId) {
+        method = "PUT";
+        url += `/${equipoEdicionId}`;
+        bodyData.id = parseInt(equipoEdicionId);
+    }
+
+    try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(url, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(bodyData)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            document.getElementById("modalEquipo").classList.remove("modal-open");
+            cargarGrillaEquipos();
+        } else {
+            errorDiv.textContent = result.message;
+            errorDiv.classList.add("display-block");
+        }
+    } catch (err) {
+        errorDiv.textContent = "Error de conexión con la Web API.";
+        errorDiv.classList.add("display-block");
+    }
 }
 
 async function eliminarEquipo(id, nombre) {
@@ -111,74 +190,11 @@ async function eliminarEquipo(id, nombre) {
 
         const result = await response.json();
         if (response.ok) {
-            alert(result.message || "Equipo eliminado.");
             cargarGrillaEquipos();
         } else {
             alert(result.message);
         }
     } catch (error) {
         alert("Error de red al conectar con la Web API.");
-    }
-}
-
-async function configurarModoEdicionEquipo(id) {
-    document.getElementById("form-title").textContent = "Modificar Equipo";
-    document.getElementById("form-subtitle").textContent = `Editando ID: ${id}`;
-
-    try {
-        const res = await fetch(`${API_EQUIPO_URL}/${id}`);
-        if (!res.ok) return;
-        const eq = await res.json();
-
-        document.getElementById("txtNombre").value = eq.nombre;
-        document.getElementById("txtAbreviatura").value = eq.abreviatura;
-        document.getElementById("txtEscudoUrl").value = eq.escudoUrl;
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-async function guardarDatosEquipo(e, idAlterar) {
-    e.preventDefault();
-    const errorDiv = document.getElementById("form-error");
-    errorDiv.style.display = "none";
-
-    const nombre = document.getElementById("txtNombre").value.trim();
-    const abreviatura = document.getElementById("txtAbreviatura").value.trim().toUpperCase();
-    const escudoUrl = document.getElementById("txtEscudoUrl").value.trim();
-
-    let url = API_EQUIPO_URL;
-    let method = "POST";
-    let bodyData = { nombre, abreviatura, escudoUrl };
-
-    if (idAlterar) {
-        method = "PUT";
-        url += `/${idAlterar}`;
-        bodyData.id = parseInt(idAlterar);
-    }
-
-    try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(url, {
-            method: method,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify(bodyData)
-        });
-
-        const result = await res.json();
-
-        if (res.ok) {
-            alert(result.message || "Operación realizada con éxito.");
-            window.location.href = "index.html";
-        } else {
-            errorDiv.textContent = result.message;
-            errorDiv.style.display = "block";
-        }
-    } catch (err) {
-        errorDiv.textContent = "Error de conexión con la Web API.";
-        errorDiv.style.display = "block";
     }
 }
