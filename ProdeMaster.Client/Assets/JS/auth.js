@@ -161,3 +161,12 @@ function protegerRuta(privilegiosRequeridos = []) {
         window.location.href = "../../index.html";
     }
 }
+
+function manejarSesionExpirada() {
+    alert("Su sesion ha expirado o no tiene permisos. Por favor, inicie sesion nuevamente.");
+    localStorage.clear();
+    const origin = window.location.origin;
+    const pathName = window.location.pathname;
+    const baseCliente = pathName.startsWith("/ProdeMaster.Client/") ? `${origin}/ProdeMaster.Client` : origin;
+    window.location.href = `${baseCliente}/login.html`;
+}

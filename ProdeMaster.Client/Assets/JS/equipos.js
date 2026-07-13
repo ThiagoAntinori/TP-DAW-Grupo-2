@@ -60,6 +60,11 @@ async function cargarGrillaEquipos() {
         const equipos = await response.json();
         tbody.innerHTML = "";
 
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+        
         if (equipos.length === 0) {
             tbody.innerHTML = `<tr><td colspan="5" class="texto-bloqueado celda-centrada">No hay equipos registrados.</td></tr>`;
             return;

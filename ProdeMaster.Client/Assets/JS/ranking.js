@@ -17,6 +17,11 @@ async function cargarTablaRanking() {
             }
         });
 
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (!response.ok) throw new Error();
         const datos = await response.json();
         tbody.innerHTML = "";

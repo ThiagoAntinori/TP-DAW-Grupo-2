@@ -54,6 +54,11 @@ async function cargarGrillaPartidos() {
             }
         });
 
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (!response.ok) throw new Error();
         const partidos = await response.json();
         tbody.innerHTML = "";

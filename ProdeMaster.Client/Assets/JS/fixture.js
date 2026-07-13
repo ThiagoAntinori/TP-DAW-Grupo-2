@@ -25,6 +25,11 @@ async function cargarPantallaProde() {
             fetch(API_PARTIDOS, { headers: { "Authorization": `Bearer ${token}` } }),
             fetch(`${API_PRONOSTICOS}/MisPronosticos`, { headers: { "Authorization": `Bearer ${token}` } })
         ]);
+        
+        if (resPartidos.status === 401 || resMisPronosticos.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
 
         if (!resPartidos.ok || !resMisPronosticos.ok) throw new Error();
 
@@ -135,6 +140,11 @@ async function enviarPronostico(partidoId, boton) {
             },
             body: JSON.stringify({ partidoId, golesLocal, golesVisitante })
         });
+
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
 
         if (response.ok) {
             alert("Pronóstico guardado correctamente.");

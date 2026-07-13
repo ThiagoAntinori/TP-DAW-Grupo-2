@@ -60,6 +60,11 @@ async function cargarGrillaUsuarios(searchQuery = "") {
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
         });
 
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (!response.ok) throw new Error();
         const usuarios = await response.json();
         tbody.innerHTML = "";
@@ -106,6 +111,11 @@ async function cargarCheckboxesPrivilegios() {
         const res = await fetch(`${API_USUARIOS_URL}/privilegios`);
         const privilegios = await res.json();
         
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         container.innerHTML = "";
         privilegios.forEach(priv => {
             const label = document.createElement("label");
@@ -141,6 +151,11 @@ async function abrirEditarUsuario(id) {
         });
         if (!res.ok) return;
         const usuario = await res.json();
+
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
 
         document.getElementById("txtUsername").value = usuario.userName;
 

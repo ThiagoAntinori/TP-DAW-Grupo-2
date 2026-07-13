@@ -58,6 +58,11 @@ async function cargarGrillaPrivilegios(searchQuery = "") {
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
         });
 
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (!response.ok) throw new Error();
         const privilegios = await response.json();
         tbody.innerHTML = "";
@@ -99,6 +104,12 @@ async function abrirEditarPrivilegio(id) {
         const res = await fetch(`${API_PRIVILEGIOS_URL}/${id}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
+
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (!res.ok) return;
         const privilegio = await res.json();
 
@@ -134,6 +145,11 @@ async function guardarDatosPrivilegio(e) {
 
         const result = await res.json();
 
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (res.ok) {
             document.getElementById("modalPrivilegio").classList.remove("modal-open");
             cargarGrillaPrivilegios();
@@ -160,6 +176,11 @@ async function eliminarPrivilegio(id, description) {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
+
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
 
         const result = await response.json();
         if (response.ok) {
