@@ -1,4 +1,4 @@
-const API_URL = "http://prodemaster-api.runasp.net/api"; 
+const API_URL = "https://prodemaster-api.runasp.net/api";
 
 document.addEventListener("DOMContentLoaded", () => {
     const formLogin = document.getElementById("loginForm");
