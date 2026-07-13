@@ -28,7 +28,7 @@ namespace ProdeMaster.API.Controllers
                 return BadRequest(new { message = "Los datos del equipo no son válidos." });
 
             if (string.IsNullOrWhiteSpace(equipo.Nombre))
-                return BadRequest(new { message = "El nombre del equipo es mandatorio." });
+                return BadRequest(new { message = "El nombre del equipo es obligatorio." });
 
             var nombreNormalizado = equipo.Nombre.Trim().ToUpper();
             var existe = await _context.Equipos.AnyAsync(e => e.Nombre.ToUpper() == nombreNormalizado);
