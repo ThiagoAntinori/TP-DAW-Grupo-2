@@ -1,4 +1,4 @@
-const API_RANKING = "http://localhost:5097/api/Ranking";
+const API_RANKING = "http://prodemaster-api.runasp.net/api/Ranking";
 
 document.addEventListener("DOMContentLoaded", () => {
     protegerRuta(["PARTICIPAR_PRODE", "ADMIN_NEGOCIO", "ADMIN_SEGURIDAD"]);

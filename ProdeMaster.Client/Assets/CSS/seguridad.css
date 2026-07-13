@@ -137,20 +137,12 @@
     font-size: 0.9rem;
 }
 
-/* --- DISEÑO DE TABLAS ULTRA LIMPIO --- */
-.premium-table-card {
-    background-color: var(--white);
-    border: 1px solid var(--border-soft);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
-}
-
 .premium-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     text-align: left;
+    min-width: 750px;
 }
 
 .premium-table th {
@@ -184,7 +176,16 @@
     font-weight: 600;
 }
 
-/* Columnas Estructurales */
+.table-responsive-container, .premium-table-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+    width: 100%;
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch;
+}
+
 .col-id-center { width: 90px; text-align: center; font-weight: 700; color: var(--text-dark-muted); }
 .col-actions-right { width: 24px; text-align: right; }
 

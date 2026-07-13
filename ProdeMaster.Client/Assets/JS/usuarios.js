@@ -1,4 +1,4 @@
-const API_USUARIOS_URL = "http://localhost:5097/api/Usuarios"; 
+const API_USUARIOS_URL = "http://prodemaster-api.runasp.net/api/Usuarios"; 
 let usuarioEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {

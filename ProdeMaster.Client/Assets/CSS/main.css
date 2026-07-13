@@ -297,7 +297,7 @@ body {
 }
 
 /* --- RESPONSIVIDAD (MENÚ HAMBURGUESA) --- */
-@media (max-width: 992px) {
+@media (max-width: 1350px) {
     .hamburger-menu {
         display: block;
     }

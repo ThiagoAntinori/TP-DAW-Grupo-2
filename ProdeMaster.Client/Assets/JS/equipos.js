@@ -1,4 +1,4 @@
-const API_EQUIPO_URL = "http://localhost:5097/api/Equipo";
+const API_EQUIPO_URL = "http://prodemaster-api.runasp.net/api/Equipo";
 let equipoEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {

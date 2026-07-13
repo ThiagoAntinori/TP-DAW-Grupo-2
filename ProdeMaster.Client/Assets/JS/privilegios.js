@@ -1,4 +1,4 @@
-const API_PRIVILEGIOS_URL = "http://localhost:5097/api/Usuarios/privilegios"; 
+const API_PRIVILEGIOS_URL = "http://prodemaster-api.runasp.net/api/Usuarios/privilegios"; 
 let privilegioEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
