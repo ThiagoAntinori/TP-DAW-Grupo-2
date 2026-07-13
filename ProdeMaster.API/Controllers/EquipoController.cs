@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ProdeMaster.API.Data;
 using ProdeMaster.API.Models;
@@ -22,6 +23,7 @@ namespace ProdeMaster.API.Controllers
 
         // POST: api/Equipo
         [HttpPost]
+        [Authorize(Roles = "ADMIN_NEGOCIO")]
         public async Task<IActionResult> CrearEquipo([FromBody] Equipo equipo)
         {
             if (equipo == null)
@@ -71,6 +73,7 @@ namespace ProdeMaster.API.Controllers
 
         // PUT: api/Equipo/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN_NEGOCIO")]
         public async Task<IActionResult> ActualizarEquipo(int id, [FromBody] Equipo equipo)
         {
             if (id != equipo.Id)
@@ -108,6 +111,7 @@ namespace ProdeMaster.API.Controllers
 
         // DELETE: api/Equipo/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN_NEGOCIO")]
         public async Task<IActionResult> EliminarEquipo(int id)
         {
             var equipo = await _context.Equipos.FindAsync(id);

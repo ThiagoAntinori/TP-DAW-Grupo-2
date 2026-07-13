@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ProdeMaster.API.Data;
 using ProdeMaster.API.Models;
@@ -25,6 +26,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<ActionResult<IEnumerable<Privilege>>> GetPrivilegios()
         {
             var privilegios = await _context.Privileges.ToListAsync();
@@ -32,6 +34,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Privilege>> GetPrivilegio(int id)
         {
             var privilegio = await _context.Privileges.FindAsync(id);
@@ -43,6 +46,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpGet("buscar")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Privilege>>> BuscarPrivilegios([FromQuery] string search)
         {
             if (string.IsNullOrEmpty(search))
@@ -58,6 +62,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<IActionResult> CrearPrivilegio([FromBody] CrearPrivilegioDto dto)
         {
             var existe = await _context.Privileges.AnyAsync(p => p.Description == dto.Description);
@@ -76,6 +81,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<IActionResult> EditarPrivilegio(int id, [FromBody] CrearPrivilegioDto dto)
         {
             var privilegio = await _context.Privileges.FindAsync(id);
@@ -94,6 +100,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<IActionResult> EliminarPrivilegio(int id)
         {
             if (id == 1 || id == 2 || id == 3)

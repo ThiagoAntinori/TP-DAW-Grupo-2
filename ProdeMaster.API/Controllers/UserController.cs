@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ProdeMaster.API.Data;
 using ProdeMaster.API.Models;
@@ -41,6 +42,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsuarios([FromQuery] string? search)
         {
             var query = _context.Users
@@ -70,6 +72,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<ActionResult<UserDto>> GetUsuario(int id)
         {
             var user = await _context.Users
@@ -90,6 +93,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<IActionResult> CrearUsuario([FromBody] CrearUsuarioDto dto)
         {
             var existe = await _context.Users.AnyAsync(u => u.UserName == dto.Username);
@@ -126,6 +130,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<IActionResult> EditarUsuario(int id, [FromBody] EditarUsuarioDto dto)
         {
             var user = await _context.Users
@@ -157,6 +162,7 @@ namespace ProdeMaster.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN_SEGURIDAD")]
         public async Task<IActionResult> EliminarUsuario(int id)
         {
             var user = await _context.Users.FindAsync(id);

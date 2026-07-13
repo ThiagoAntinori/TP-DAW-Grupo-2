@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ProdeMaster.API.Data;
 using ProdeMaster.API.Models;
@@ -38,6 +39,7 @@ namespace ProdeMaster.API.Controllers
 
         // POST: api/Partido
         [HttpPost]
+        [Authorize(Roles = "ADMIN_NEGOCIO")]
         public async Task<IActionResult> CrearPartido([FromBody] CrearPartidoDto dto)
         {
             if (dto.EquipoLocalId == dto.EquipoVisitanteId)
@@ -70,6 +72,7 @@ namespace ProdeMaster.API.Controllers
 
         // GET: api/Partido
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Partido>>> ObtenerPartidos()
         {
             var partidos = await _context.Partidos
@@ -83,6 +86,7 @@ namespace ProdeMaster.API.Controllers
 
         // GET: api/Partido/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Partido>> ObtenerPartidoPorId(int id)
         {
             var partido = await _context.Partidos
@@ -98,6 +102,7 @@ namespace ProdeMaster.API.Controllers
 
         // PUT: api/Partido/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN_NEGOCIO")]
         public async Task<IActionResult> ActualizarPartido(int id, [FromBody] CrearPartidoDto dto)
         {
             var partidoDb = await _context.Partidos.FindAsync(id);
@@ -120,6 +125,7 @@ namespace ProdeMaster.API.Controllers
 
         // POST: api/Partido/5/resultado
         [HttpPost("{id}/resultado")]
+        [Authorize(Roles = "ADMIN_NEGOCIO")]
         public async Task<IActionResult> CargarResultado(int id, [FromBody] ResultadoPartidoDto dto)
         {
             var partido = await _context.Partidos.FindAsync(id);
@@ -139,6 +145,7 @@ namespace ProdeMaster.API.Controllers
 
         // DELETE: api/Partido/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN_NEGOCIO")]
         public async Task<IActionResult> EliminarPartido(int id)
         {
             var partido = await _context.Partidos.FindAsync(id);
