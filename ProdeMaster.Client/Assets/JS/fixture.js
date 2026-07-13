@@ -80,10 +80,25 @@ function crearTarjetaPartido(p, jugada) {
 
     let estadoBadge = `<span class="badge-status-prode badge-status-available">DISPONIBLE</span>`;
     let botonHtml = `<button class="btn btn-success" onclick="enviarPronostico(${p.id}, this)"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>`;
+    let puntosHtml = "";
 
     if (esBloqueado) {
         if (p.estado === "Finalizado") {
             estadoBadge = `<span class="badge-status-prode badge-status-finalized">FINALIZADO (${p.golesLocal}-${p.golesVisitante})</span>`;
+            
+            if (jugada) {
+                const puntos = calcularPuntosObtenidos(p.golesLocal, p.golesVisitante, jugada.golesLocal, jugada.golesVisitante);
+                if (puntos === 3) {
+                    puntosHtml = `<span class="badge-puntos puntos-pleno"><i class="fa-solid fa-circle-check"></i> +3 Puntos (Exacto)</span>`;
+                } else if (puntos === 1) {
+                    puntosHtml = `<span class="badge-puntos puntos-tendencia"><i class="fa-solid fa-circle-right"></i> +1 Punto (Tendencia)</span>`;
+                } else {
+                    puntosHtml = `<span class="badge-puntos puntos-cero"><i class="fa-solid fa-circle-xmark"></i> 0 Puntos</span>`;
+                }
+            } else {
+                puntosHtml = `<span class="badge-puntos puntos-cero"><i class="fa-solid fa-circle-xmark"></i> No pronosticado</span>`;
+            }
+
         } else {
             estadoBadge = `<span class="badge-status-prode badge-status-closed">CERRADO</span>`;
         }
@@ -93,7 +108,10 @@ function crearTarjetaPartido(p, jugada) {
     div.innerHTML = `
         <div class="partido-info-meta-row">
             <span class="partido-fecha-badge"><i class="fa-solid fa-calendar-day"></i> ${fechaTexto}</span>
-            ${estadoBadge}
+            <div class="header-badges-row">
+                ${puntosHtml}
+                ${estadoBadge}
+            </div>
         </div>
         <div class="partido-equipos-vs-grid">
             <div class="equipo-voto-bloque-premium local">
@@ -160,4 +178,16 @@ async function enviarPronostico(partidoId, boton) {
         boton.disabled = false;
         boton.innerHTML = botonOriginalContent;
     }
+}
+
+function calcularPuntosObtenidos(realL, realV, pronoL, pronoV) {
+    if (realL === pronoL && realV === pronoV) {
+        return 3;
+    }
+    const tendenciaReal = Math.sign(realL - realV);
+    const tendenciaPronostico = Math.sign(pronoL - pronoV);
+    if (tendenciaReal === tendenciaPronostico) {
+        return 1;
+    }
+    return 0;
 }

@@ -147,7 +147,14 @@ async function abrirEditarPartido(id) {
     await cargarSelectsEquipos();
 
     try {
-        const res = await fetch(`${API_PARTIDO_URL}/${id}`);
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_PARTIDO_URL}/${id}`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
         if (!res.ok) return;
         const p = await res.json();
 
@@ -222,6 +229,11 @@ async function guardarDatosPartido(e) {
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                     body: JSON.stringify({ golesLocal: golesL, golesVisitante: golesV })
                 });
+
+                if (resResultado.status === 401) {
+                    manejarSesionExpirada();
+                    return;
+                }
                 
                 if (resResultado.ok) {
                     document.getElementById("modalPartido").classList.remove("modal-open");
@@ -237,9 +249,14 @@ async function guardarDatosPartido(e) {
             body: JSON.stringify(bodyData)
         });
 
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (res.ok) {
             document.getElementById("modalPartido").classList.remove("modal-open");
-            cargarGrillaPartidos();
+            await cargarGrillaPartidos();
         } else {
             const result = await res.json();
             errorDiv.textContent = result.message;
@@ -259,8 +276,12 @@ async function eliminarPartido(id) {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
         if (response.ok) {
-            cargarGrillaPartidos();
+            await cargarGrillaPartidos();
         }
     } catch (err) {
         alert("Error de conexión.");

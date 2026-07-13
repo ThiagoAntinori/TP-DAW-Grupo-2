@@ -143,12 +143,12 @@ async function guardarDatosPrivilegio(e) {
             body: JSON.stringify(bodyData)
         });
 
-        const result = await res.json();
-
         if (res.status === 401) {
             manejarSesionExpirada();
             return;
         }
+
+        const result = await res.json();
 
         if (res.ok) {
             document.getElementById("modalPrivilegio").classList.remove("modal-open");

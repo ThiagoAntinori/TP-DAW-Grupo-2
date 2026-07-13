@@ -108,14 +108,18 @@ async function cargarGrillaUsuarios(searchQuery = "") {
 async function cargarCheckboxesPrivilegios() {
     const container = document.getElementById("containerPrivileges");
     try {
-        const res = await fetch(`${API_USUARIOS_URL}/privilegios`);
-        const privilegios = await res.json();
-        
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_USUARIOS_URL}/privilegios`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
         if (res.status === 401) {
             manejarSesionExpirada();
             return;
         }
 
+        const privilegios = await res.json();
+        
         container.innerHTML = "";
         privilegios.forEach(priv => {
             const label = document.createElement("label");
@@ -149,13 +153,14 @@ async function abrirEditarUsuario(id) {
         const res = await fetch(`${API_USUARIOS_URL}/${id}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
-        if (!res.ok) return;
-        const usuario = await res.json();
 
         if (res.status === 401) {
             manejarSesionExpirada();
             return;
         }
+
+        if (!res.ok) return;
+        const usuario = await res.json();
 
         document.getElementById("txtUsername").value = usuario.userName;
 
@@ -207,6 +212,11 @@ async function guardarDatosUsuario(e) {
             body: JSON.stringify(bodyData)
         });
 
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         const result = await res.json();
 
         if (res.ok) {
@@ -235,6 +245,11 @@ async function eliminarUsuario(id, username) {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
+
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
 
         if (response.ok) cargarGrillaUsuarios();
     } catch (error) {

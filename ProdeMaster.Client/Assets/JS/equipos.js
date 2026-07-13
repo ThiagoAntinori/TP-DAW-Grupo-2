@@ -56,14 +56,14 @@ async function cargarGrillaEquipos() {
             }
         });
 
-        if (!response.ok) throw new Error();
-        const equipos = await response.json();
-        tbody.innerHTML = "";
-
         if (response.status === 401) {
             manejarSesionExpirada();
             return;
         }
+
+        if (!response.ok) throw new Error();
+        const equipos = await response.json();
+        tbody.innerHTML = "";
         
         if (equipos.length === 0) {
             tbody.innerHTML = `<tr><td colspan="5" class="texto-bloqueado celda-centrada">No hay equipos registrados.</td></tr>`;
@@ -122,6 +122,12 @@ async function abrirEditarEquipo(id) {
 
     try {
         const res = await fetch(`${API_EQUIPO_URL}/${id}`);
+
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         if (!res.ok) return;
         const eq = await res.json();
 
@@ -165,6 +171,11 @@ async function guardarDatosEquipo(e) {
             body: JSON.stringify(bodyData)
         });
 
+        if (res.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
+
         const result = await res.json();
 
         if (res.ok) {
@@ -192,6 +203,11 @@ async function eliminarEquipo(id, nombre) {
                 "Authorization": `Bearer ${token}`
             }
         });
+
+        if (response.status === 401) {
+            manejarSesionExpirada();
+            return;
+        }
 
         const result = await response.json();
         if (response.ok) {

@@ -548,3 +548,38 @@
     color: #475569;
     border: 1px solid var(--border-soft);
 }
+
+.header-badges-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.badge-puntos {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border-radius: 6px;
+    border: 1px solid transparent;
+}
+
+.puntos-pleno {
+    background-color: #fef3c7;
+    color: #d97706;
+    border-color: #fde68a;
+}
+
+.puntos-tendencia {
+    background-color: #f0fdf4;
+    color: var(--color-green-pitch);
+    border-color: #bbf7d0;
+}
+
+.puntos-cero {
+    background-color: #f1f5f9;
+    color: var(--text-dark-muted);
+    border-color: var(--border-soft);
+}
