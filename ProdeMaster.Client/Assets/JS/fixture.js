@@ -1,5 +1,5 @@
-const API_PARTIDOS = "http://prodemaster-api.runasp.net/api/Partido";
-const API_PRONOSTICOS = "http://prodemaster-api.runasp.net/api/Pronostico";
+const API_PARTIDOS = "https://prodemaster-api.runasp.net/api/Partido";
+const API_PRONOSTICOS = "https://prodemaster-api.runasp.net/api/Pronostico";
 
 document.addEventListener("DOMContentLoaded", () => {
     protegerRuta(["PARTICIPAR_PRODE", "ADMIN_NEGOCIO", "ADMIN_SEGURIDAD"]);

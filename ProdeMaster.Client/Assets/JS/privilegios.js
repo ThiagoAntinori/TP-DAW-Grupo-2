@@ -1,4 +1,4 @@
-const API_PRIVILEGIOS_URL = "http://prodemaster-api.runasp.net/api/Usuarios/privilegios"; 
+const API_PRIVILEGIOS_URL = "https://prodemaster-api.runasp.net/api/Usuarios/privilegios";  
 let privilegioEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -49,7 +49,7 @@ async function cargarGrillaPrivilegios(searchQuery = "") {
     const tbody = document.querySelector("#tblPrivileges tbody");
     let url = API_PRIVILEGIOS_URL;
     if (searchQuery) {
-        url = `http://localhost:5097/api/Usuarios/privilegios/buscar?search=${encodeURIComponent(searchQuery)}`;
+        url = `https://prodemaster-api.runasp.net/api/Usuarios/privilegios/buscar?search=${encodeURIComponent(searchQuery)}`;
     }
 
     try {

@@ -1,5 +1,5 @@
-const API_PARTIDO_URL = "http://prodemaster-api.runasp.net/api/Partido";
-const API_AUX_EQUIPOS = "http://prodemaster-api.runasp.net/api/Equipo";
+const API_PARTIDO_URL = "https://prodemaster-api.runasp.net/api/Partido";
+const API_AUX_EQUIPOS = "https://prodemaster-api.runasp.net/api/Equipo";
 let partidoEdicionId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
