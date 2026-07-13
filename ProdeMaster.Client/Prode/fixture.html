@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProdeMaster - Tabla de Posiciones</title>
+    <title>ProdeMaster - Carga de Pronósticos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/fixture.css">
 </head>
@@ -22,13 +22,13 @@
 
             <nav id="navbarLinks" class="navbar-links">
                 <div id="menu-user-section" class="display-none">
-                    <a href="fixture.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
-                    <a href="podio.html" class="nav-link active"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
+                    <a href="fixture.html" class="nav-link active"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
+                    <a href="podio.html" class="nav-link"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
                 </div>
 
                 <div id="menu-seguridad-section" class="display-none">
-                    <a href="../modulo seguridad/usuarios/index.html" class="nav-link"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
-                    <a href="../modulo seguridad/privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
+                    <a href="../seguridad/usuarios/index.html" class="nav-link"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
+                    <a href="../seguridad/privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
                 </div>
 
                 <div id="menu-prode-section" class="display-none">
@@ -46,33 +46,24 @@
         <main class="main-content">
             <div class="view-body">
                 <header class="content-header">
-                    <h1>Tabla de Posiciones Global</h1>
-                    <p>Temporada competitiva 2026. Los empates en puntaje se dirimen automáticamente por la mayor cantidad de aciertos exactos registrados.</p>
+                    <h1>Fixture y Pronósticos</h1>
+                    <p>Calculá tus predicciones para los partidos de la jornada mundialista antes del inicio del juego oficial.</p>
                 </header>
 
-                <div class="premium-table-card">
-                    <table class="premium-table" id="tblRanking">
-                        <thead>
-                            <tr>
-                                <th class="col-id-center">Puesto</th>
-                                <th>Nombre de Usuario</th>
-                                <th class="celda-centrada">Plenos</th>
-                                <th class="col-actions-right">Puntos Totales</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="4" class="texto-bloqueado celda-centrada">Calculando rendimiento de los jugadores...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div id="fixture-error" class="alert-error"></div>
+
+                <section class="fixture-cards-wrapper" id="panel-fixture">
+                    <div class="loading-state-card">
+                        <i class="fa-solid fa-spinner fa-spin loading-spinner-icon"></i>
+                        <p class="texto-bloqueado celda-centrada">Sincronizando fixture oficial con la central...</p>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
 
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/ranking.js"></script>
+    <script src="../assets/js/fixture.js"></script>
 </body>
 </html>

@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProdeMaster - Gestión de Equipos</title>
+    <title>ProdeMaster - Gestión de Usuarios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../assets/css/fixture.css">
+    <link rel="stylesheet" href="../../assets/css/seguridad.css">
 </head>
 <body>
 
     <div class="app-container">
+        
         <header class="top-navbar">
             <div class="navbar-brand">
                 <i class="fa-solid fa-trophy brand-icon"></i>
@@ -22,18 +23,18 @@
 
             <nav id="navbarLinks" class="navbar-links">
                 <div id="menu-user-section" class="display-none">
-                    <a href="../fixture.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
-                    <a href="../podio.html" class="nav-link"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
+                    <a href="../../prode/fixture.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Fixture</a>
+                    <a href="../../prode/podio.html" class="nav-link"><i class="fa-solid fa-ranking-star"></i> Posiciones</a>
                 </div>
 
                 <div id="menu-seguridad-section" class="display-none">
-                    <a href="../../modulo seguridad/usuarios/index.html" class="nav-link"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
-                    <a href="../../modulo seguridad/privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
+                    <a href="index.html" class="nav-link active"><i class="fa-solid fa-users-gear"></i> Usuarios</a>
+                    <a href="../privilegios/index.html" class="nav-link"><i class="fa-solid fa-key"></i> Privilegios</a>
                 </div>
 
                 <div id="menu-prode-section" class="display-none">
-                    <a href="index.html" class="nav-link active"><i class="fa-solid fa-shield-halved"></i> Equipos</a>
-                    <a href="../partidos/index.html" class="nav-link"><i class="fa-solid fa-circle-play"></i> Partidos</a>
+                    <a href="../../prode/equipos/index.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Equipos</a>
+                    <a href="../../prode/partidos/index.html" class="nav-link"><i class="fa-solid fa-circle-play"></i> Partidos</a>
                 </div>
 
                 <div class="navbar-user-control">
@@ -45,35 +46,35 @@
 
         <main class="main-content">
             <div class="view-body">
+                
                 <header class="content-header">
-                    <h1>Gestión de Equipos</h1>
-                    <p>Administración institucional de las federaciones y clubes participantes de la Copa del Mundo.</p>
+                    <h1>Gestión de Usuarios</h1>
+                    <p>Administración y asignación de credenciales operativas del sistema.</p>
                 </header>
 
                 <section class="analytics-action-bar">
                     <div class="analytics-flex-wrapper">
                         <div class="interactive-search-box">
-                            <input type="text" id="txtSearch" placeholder="Buscar por nombre de equipo...">
+                            <input type="text" id="txtSearch" placeholder="Buscar por nombre de usuario...">
                             <button id="btnSearch" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
-                        <button id="btnAbrirCrear" class="btn btn-success"><i class="fa-solid fa-plus"></i> Nuevo Equipo</button>
+                        <button id="btnAbrirCrear" class="btn btn-success"><i class="fa-solid fa-user-plus"></i> Registrar Usuario</button>
                     </div>
                 </section>
 
-                <div class="premium-table-card table-responsive-container">
-                    <table class="premium-table" id="tblTeams">
+                <div class="premium-table-card">
+                    <table class="premium-table" id="tblUsers">
                         <thead>
                             <tr>
                                 <th class="col-id-center">ID</th>
-                                <th class="col-escudo-center">Escudo</th>
-                                <th>Nombre Institucional</th>
-                                <th>Abreviatura</th>
+                                <th>Nombre de Usuario</th>
+                                <th>Privilegios Otorgados</th>
                                 <th class="col-actions-right">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="5" class="texto-bloqueado celda-centrada">Sincronizando federaciones con el servidor...</td>
+                                <td colspan="4" class="texto-bloqueado celda-centrada">Sincronizando con la base de datos...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -86,34 +87,35 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
 
-    <div id="modalEquipo" class="modal-overlay">
+    <div id="modalUsuario" class="modal-overlay">
         <div class="modal-window">
             <header class="modal-header">
-                <h3 id="form-title">Crear Nuevo Equipo</h3>
-                <p id="form-subtitle">Complete los datos institucionales del club</p>
+                <h3 id="form-title">Registrar Usuario</h3>
+                <p id="form-subtitle">Parámetros operativos de la cuenta</p>
             </header>
             <div class="modal-body">
                 <div id="form-error" class="alert-error"></div>
-                <form id="formEquipo">
+                <form id="formUsuario">
                     <div class="form-field-block">
-                        <label for="txtNombre">Nombre del Equipo</label>
-                        <input type="text" id="txtNombre" required placeholder="Ej: Argentina">
+                        <label for="txtUsername">Nombre del Operario</label>
+                        <input type="text" id="txtUsername" required placeholder="Ej: marcos.perez">
+                    </div>
+                    <div class="form-field-block" id="secPassword">
+                        <label for="txtPassword">Contraseña de acceso</label>
+                        <input type="password" id="txtPassword" placeholder="Mínimo 6 caracteres seguros">
                     </div>
                     <div class="form-field-block">
-                        <label for="txtAbreviatura">Abreviatura (3 Letras)</label>
-                        <input type="text" id="txtAbreviatura" required maxlength="3" placeholder="Ej: ARG">
-                    </div>
-                    <div class="form-field-block">
-                        <label for="txtEscudoUrl">URL del Escudo (Imagen)</label>
-                        <input type="text" id="txtEscudoUrl" placeholder="Ej: https://link.com/escudo.png">
+                        <label>Permisos</label>
+                        <div class="scrolling-privilege-panel" id="containerPrivileges"></div>
                     </div>
                     <div class="form-actions-row">
                         <button type="button" id="btnCerrarModal" class="btn btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Guardar Equipo</button>
+                        <button type="submit" id="btnGuardar" class="btn btn-success">Guardar Usuario</button>
                     </div>
                 </form>
             </div>
@@ -122,6 +124,6 @@
 
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/equipos.js"></script>
+    <script src="../../assets/js/usuarios.js"></script>
 </body>
 </html>
